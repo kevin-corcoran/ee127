@@ -1,0 +1,29 @@
+\qns{Formulating problems as LP/QP/QCQP/SOCP}\rm
+
+Formulate the problem in the parts given below as LP/QP/QCQP/SOCP, or, if you cannot, explain why. 
+In our formulations, unless explicitly stated, $x \in \Real{n}$, $A \in \Real{m,n}$, $y \in \Real{m}$. If you obtain an LP/QP/QCQP/SOCP formulation, make sure to put the problem in standard form, stating precisely what the variables, objective, and constraints are. 
+\newline
+\newline
+{[Optimization Problem Formulation or Few Lines of Justification]}
+%\begin{center}
+%\begin{tabular}{rcl}
+%$f_1(x)$  &=& $\|Ax-y\|_\infty +\|x\|_1$ \\ 
+%$f_2(x)$  &=& $\|Ax-y\|_2^2 + \|x\|_1$ \\
+%$f_3(x)$  &=& $\|Ax-y\|_2^2 - \|x\|_1$ \\
+%$f_4(x)$  &=& $\|Ax-y\|_2^2 + \|x\|_1^2$ 
+%%$f_5(x)$  &=& $\sum_{i=1}^k |Ax-y|_{[i]} + \|x\|_2^2$
+%\end{tabular}
+%\end{center}
+
+\begin{enumerate}
+    \item $p_1^* \doteq \min_x \: f(x),\;\;\text{where}\;\; f(x) = \|Ax-y\|_\infty +\|x\|_1$
+    \item $p_2^* \doteq \min_x \: f(x),\;\;\text{where}\;\; f(x) = \|Ax-y\|_2^2 + \|x\|_1$ 
+    \item $p_3^* \doteq \min_x \: f(x),\;\;\text{where}\;\; f(x) = \|Ax-y\|_2^2 - \|x\|_1$
+    \item $p_4^* \doteq \min_x \: f(x),\;\;\text{where}\;\; f(x) = \|Ax-y\|_2^2 + \|x\|_1^2$ 
+    \item $p_5^* \doteq \min_x \: f(x),\;\;\text{where}\;\; f(x) = \frac{x_1^2+x_2^2+x_3^2}{4(1-x_1)}$, where $x\in \text{dom}(f) = \{x\in \Real{3}, x_1 < 1\}$ \\%M2F8
+    \textit{Hint: $4ab = (a+b)^2 - (a-b)^2$}
+    \item $p_6^* \doteq \max_x \: f(x), \;\;\text{where}\;\;f(x) = \frac{b\tran x}{1-a\tran x}$, and $a,b \in \Real{n}$ are given, with $a,b \ne 0$ and $\|a\|_2 < 1$
+\end{enumerate}
+\sol{
+    \input{which_opt_prblms_solutions/which_opt_prblm_solutions.tex}
+}

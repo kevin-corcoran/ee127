@@ -1,0 +1,25 @@
+\qns{Solving a simple optimization problem using \texttt{cvxpy}}\\
+In this problem we will solve a simple optimization problem using \texttt{cvxpy}. We have the following optimization problem:\\
+\begin{align*}
+    \text{minimize}\;\;\; 5x_0 + &6x_1 + 2x_2 + 9x_3\\
+    \text{subject to,}\\
+    x_0,x_1,x_2,x_3 &\geq 0\\
+    2x_0 - 3x_1 &\leq 1\\
+    x_0 + 3x_1 + 2x_3  &= 12\\
+    2x_1 + 5x_2 &\geq 15\\
+\end{align*}
+\begin{enumerate}
+    \item 
+    Is the problem convex? Justify your answer.
+    
+    \sol{
+    \input{simple_cvxpy_solution/1.tex}
+    }
+    \item
+    Solve the problem using \texttt{cvxpy} in iPython notebook. Please refer to \url{https://www.cvxpy.org/tutorial/index.html} for more familiarity with \texttt{cvxpy}.
+    
+    \sol{
+    \input{simple_cvxpy_solution/2.tex}
+    }
+\end{enumerate}
+

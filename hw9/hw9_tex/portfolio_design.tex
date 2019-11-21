@@ -1,0 +1,104 @@
+%!TEX root = ./hw3.tex
+\qns{A Portfolio Design Problem}\rm
+\label{exer:portfolio_socp}
+The returns on $n = 4$ assets are described by a Gaussian (normal) random vector $r \in \mathbb{R}^n$ , having the following expected value $\hat{r}$ and covariance matrix $\Sigma$: 
+\[
+\hat{r} = 
+\begin{bmatrix}
+    0.12  \\
+    0.10  \\
+    0.07 \\
+    0.03 
+    
+\end{bmatrix}, \; \Sigma = 
+\begin{bmatrix}
+    0.0064 & 0.0008 & -0.0011  & 0 \\
+    0.0008 & 0.0025 & 0  & 0 \\
+    -0.0011 & 0 & 0.0004  & 0 \\
+    0 & 0 & 0  & 0
+    
+\end{bmatrix}
+.
+\]
+
+
+The last (fourth) asset corresponds to a risk-free investment. An investor
+wants to design a portfolio mix with weights $x \in \mathbb{R}^n$ (each weight $x_i$
+is non-negative, and the sum of the weights is one) so as to obtain the best possible expected return $\hat{r}^Tx$, while guaranteeing that: \\ 
+
+(i) No single asset weighs more than $40\%$. \\ 
+(ii) The risk-free assets should not weigh more than $20\%$. \\ 
+(iii) No asset should weigh less than $5\%$. \\ 
+(iv) The probability of experiencing a return lower than $q = -1\%$ should be no larger than $\epsilon = 10^{-4}$.
+\begin{enumerate}
+
+\item {[Short justification, 1-2 lines]} For a scalar standard normal $y \sim \mathcal{N}(0, 1)$, show that the constraint
+
+\begin{equation*}
+    \textbf{Pr}(y \leq q) \leq \epsilon
+\end{equation*}
+
+can be written as
+
+\begin{equation*}
+    q \leq \Phi^{-1}(\epsilon),
+\end{equation*}
+
+where $\Phi(y)$ is the CDF of $y$, and $\Phi^{-1}$ is the inverse CDF. In particular, justify taking any inverse across inequality.
+
+\newline
+\sol{\input{portfolio_design_sol/1.tex}}
+\newline
+
+\item {[Short justification, 1-2 lines]} Given a multivariable Gaussian $r \sim \mathcal{N}(\hat{r}, \Sigma),r \in \mathcal{R}^n$, its projection onto any $x \in \mathcal{R}^n$ is also a scalar Gaussian. That is,
+
+\begin{equation*}
+    r^Tx \sim \mathcal{N}(\hat{r}^Tx, x^T \Sigma x).
+\end{equation*}
+
+Show that the fourth constraint, also known as the chance constraint, can be written as 
+
+\begin{equation*}
+\Phi^{-1}(10^{-4})||\Sigma^{1/2}x||_2 \geq -\hat{r}^Tx - 0.01.
+\end{equation*}
+Note that $\Phi^{-1}(10^{-4})$ is negative so this constraint can be converted to one in standard SOCP format as 
+\begin{equation*}
+||\Sigma^{1/2}x||_2 \leq \frac{1}{\Phi^{-1}(10^{-4})}(-\hat{r}^Tx - 0.01).
+\end{equation*}
+
+\emph{Hint: Write $r\tran x$ as a standard Normal.}
+
+\newline
+\sol{\input{portfolio_design_sol/2.tex}}
+\newline
+
+\item {[Optimization Problem Formulation]} Formulate the portfolio optimization problem as a SOCP.
+Solve the problem using CVXPY in the Jupyter notebook. What is the maximal achievable expected return, under the above constraints? \\
+
+
+% \textbf{Hint}: Constraint (iv) is known as a "chance constraint." 
+% \[
+% a^Tx \sim N(\hat{a}, \Sigma) \implies a^Tx - b \sim N(\hat{a}x - b, x^Tx\Sigma x).
+% \]
+% We then have:
+% \[\Pr(a^Tx \leq b) \geq \eta \iff b - \hat{a}^Tx \geq \Phi^{-1}(\eta)||\Sigma^{1/2}x||_2
+% \]
+
+\newline
+\sol{\input{portfolio_design_sol/3.tex}}
+\newline
+
+\item Solve the problem for a large number of values of $\epsilon$ between $10^{-6}$ and $10^{-1}$ and plot the optimal values of $\hat{r}^Tx$ versus $\epsilon$.   Also make an area plot of the optimal portfolios $x$ versus $\epsilon$. What do you observe as the risk tolerance $\epsilon$ decreases? Read  \href{https://en.wikipedia.org/wiki/Area_chart}{\color{blue} here} for what an area plot is. 
+
+\newline
+\sol{\input{portfolio_design_sol/4.tex}}
+\newline
+
+\item \textit{Monte Carlo simulation.} Let $x$ be the optimal portfolio found in part 1, with $\epsilon = 10^{-4}$ . This portfolio maximizes the expected return, subject to the probability of a loss being no more than 1 $\%$. Generate 10000 samples of $r$, and plot a histogram of the returns. Find the empirical mean of the return, and calculate the percentage of samples for which a loss occurs. For more on Monte Carlo, see \href{https://en.wikipedia.org/wiki/Monte_Carlo_method}{\color{blue} here}.
+
+\newline
+\sol{\input{portfolio_design_sol/5.tex}}
+\newline
+
+\end{enumerate}
+

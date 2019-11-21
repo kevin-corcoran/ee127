@@ -1,0 +1,66 @@
+\qns{PSD equivalence: the Schur complement}\\ 
+ Let $A \in \mathbb{S}^{n}$, $C \in \mathbb{S}^{m}$, $B \in \Real{n\times m}$, and consider the block matrix
+ 
+ \[
+ M = \begin{bmatrix}
+A & B \\ 
+B^T & C
+\end{bmatrix}.
+\]
+
+\begin{enumerate}
+
+\qitem Let $f(x, y) = \begin{bmatrix}
+    x \\
+    y
+    \end{bmatrix}^\top M
+    \begin{bmatrix}
+    x \\
+    y
+    \end{bmatrix}$, for $x \in \R n$ and $y \in \R m$. Prove that for any $y$, if $A$ is positive definite, we have
+
+\[
+\min_x f(x, y) = y\tran (C- B^T A^{-1} B) y.
+\]
+
+\sol{\input{Schur_complement_solutions/1.tex}}
+
+\qitem Prove that if $A$ is positive definite, then 
+\[
+S_A \doteq C- B^T A^{-1} B \succeq 0 \Longleftrightarrow  M = \begin{bmatrix}
+A & B \\ 
+B^T & C
+\end{bmatrix} \succeq 0.
+\]
+
+\textit{Hint: $M$ is positive semi-definite if and only if 
+\[
+\min_{x,y} \begin{bmatrix}
+x \\
+y
+\end{bmatrix}^\top M 
+\begin{bmatrix}
+x \\
+y
+\end{bmatrix} \geq 0
+\]
+}
+
+\sol{\input{Schur_complement_solutions/2.tex}}
+\qitem Similarly, prove that if $C$ is positive definite, then
+\[
+S_C \doteq A - B C^{-1} B^T \succeq 0 \Longleftrightarrow  M = \begin{bmatrix}
+A & B \\ 
+B^T & C
+\end{bmatrix} \succeq 0.
+\]
+
+\sol{\input{Schur_complement_solutions/3.tex}}
+
+To go further, feel free to read:
+\begin{itemize}
+    \item \href{https://en.wikipedia.org/wiki/Schur_complement}{The wikipedia page of the Schur complement}
+\end{itemize}
+
+
+\end{enumerate}

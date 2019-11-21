@@ -1,0 +1,113 @@
+\qns{Dynamical system as linear equation}
+
+In this exercise, we consider a linear dynamical system as a matrix multiplication. We then apply our findings to compute the solution of the pendulum.
+
+Let us consider the following dynamical system:
+\[ \Dot{x} = A x + B u\]
+with $u$ a control variable and $x$ the state of the system.
+
+We want to approximate the solution $x(t)$ at time $t>0$, given $x(0)=x_0$.
+
+We divided the time interval $[0, t]$ in $n$ time step of $\Delta t = \frac{t}{n}$: $[0, t/n], [t/n, 2t/n], \dots [(n-1)t/n, t]$.
+
+We approximate the linear equation by:
+$\frac{x_{k+1}-x_{k}}{\Delta t} = A x_k + B u$ where $x_k = x(k\Delta t)$ and $0\leq k <n$.
+
+First we assume that $u = 0$, so $x_{k+1} = (A \Delta t + I) x_k$.
+
+\begin{enumerate}
+\item Assuming that $A$ is diagonalizable show that $\exists P,\ \lambda_1 \geq \dots \geq \lambda_m$, such that 
+	\[ x_{k+1} = P \begin{bmatrix}
+        1 + \lambda_1 \Delta t    &0       &\dots  &0\\
+        0      &1 + \lambda_2 \Delta t     &       &\vdots\\
+        \vdots &        &\ddots &0\\ 
+        0      &\dots   &0      & 1 + \lambda_m \Delta t
+    \end{bmatrix} P^{-1}  x_k
+    \]
+
+\sol{\input{dynamical_system_solutions/1}}
+\item Show that 
+    \[  x(t) = P\begin{bmatrix}
+        1 + \lambda_1 \frac{t}{n}    &0       &\dots  &0\\
+        0      &1 + \lambda_2 \frac{t}{n}     &       &\vdots\\
+        \vdots &        &\ddots &0\\ 
+        0      &\dots   &0      & 1 + \lambda_m \frac{t}{n}
+    \end{bmatrix}^n P^{-1} x_0
+    \]
+
+\sol{\input{dynamical_system_solutions/2}}
+\item Show that, for $n\in \mathbb{N}$ big enough, $\forall a\in \mathbb{R}$, $(1+\frac{a}{n})^n = e^{n \ln (1+\frac{a}{n})}$. State the values of $n$ for which the equality is true.
+
+\textit{Hint:} Recall that $\ln(x)$ is not defined for some value of $x$.
+
+\sol{\input{dynamical_system_solutions/3}}
+\item Using the fact that $\ln (1+\frac{a}{n}) \sim \frac{a}{n}$ when $n\rightarrow\infty$, show that $\lim\limits_{n\rightarrow\infty}(1+\frac{a}{n})^n = e^a$.
+
+\sol{\input{dynamical_system_solutions/4}}
+\item Show that 
+    \[ \lim\limits_{n\rightarrow\infty} x(t) = P \begin{bmatrix}
+        e^{\lambda_1 t}    &0       &\dots  &0\\
+        0      & e^{\lambda_2 t}     &       &\vdots\\
+        \vdots &        &\ddots &0\\ 
+        0      &\dots   &0      & e^{\lambda_m t}
+    \end{bmatrix} P^{-1}  x_0
+    \]
+
+\sol{\input{dynamical_system_solutions/5}}
+\end{enumerate}
+
+Now assume that $u\neq 0$. We are interested in the existence of an equilibrium point $x_{eq}$ such that $0 = Ax_{eq} + Bu$.
+
+\begin{enumerate}
+\setcounter{enumi}{5}
+\item Show that an equilibrium point exists if and only if $\forall x\in N(A^\top),\ x^\top Bu = 0$.
+
+\textit{Hint:} You might show first that if $Ax_{eq}=-Bu$ then $\forall x \in N(A^\top), x^\top Bu=0$. Then, you might use the fundamental theorem of linear algebra.
+
+\sol{\input{dynamical_system_solutions/6}}
+\item Let $u$ and $x_{eq}$ such that $0 = Ax_{eq} + Bu$. Let $x(0) = x_0$ and $\lambda_1<0$. Show that $\lim\limits_{t\rightarrow\infty}x(t) = x_{eq}$.
+
+\sol{\input{dynamical_system_solutions/7}}
+\end{enumerate}
+
+Some applications. 
+\begin{enumerate}
+\setcounter{enumi}{7}
+\item Let consider $A=(-1)$, $x_0 = 10$ and $u=0$, what is $x(t)$ (using e.)?
+
+\sol{\input{dynamical_system_solutions/8}}
+\end{enumerate}
+
+\textbf{The pendulum}.
+
+Let consider the following system: $\ddot{y} = -\omega^2 y $. 
+Let $X = \begin{bmatrix}
+    y \\ \dot{y}
+\end{bmatrix}$.
+We have that 
+$\dot{X} = \begin{bmatrix}
+    \dot{y} \\ \ddot{y}
+\end{bmatrix}$.
+\begin{enumerate}
+\setcounter{enumi}{8}
+\item Give $A$ a $2\times 2$ matrix such that $\dot{X} = A X$.
+Also, write the matrix in the notebook ``Dynamical system.ipynb''.
+
+\sol{\input{dynamical_system_solutions/9}}
+\item Assume that $\lambda$ is an eigenvalue of $A$, show that it implies that $\lambda^2=-\omega^2$.
+
+\sol{\input{dynamical_system_solutions/10}}
+\end{enumerate}
+
+We can diagonalize matrices in $\mathbb{C}$. For this specific case of $A$ then $\lambda_1 = j\omega$ and $\lambda_2 = -j\omega$. Also, the result of question e. is still true and $e^{j\omega t} = \cos(\omega t) + j \sin(\omega t)$. The solution of the system is $y = y_0 \cos(\omega t) + \frac{\dot{y}_0}{\omega} \sin(\omega t)$
+
+\begin{enumerate}
+\setcounter{enumi}{10}
+\item Complete this question in the notebook by filling in $X$ in terms of $n$, $t$, $X_0$, and the eigenvalues/eigenvectors of $A$.
+
+\sol{\input{dynamical_system_solutions/11}}
+
+\item[Bonus.] With respect to this exercise explain the quote of Iron Man in Avengers Endgame: ``the singular value decomposition of the inverted Mobius strip will give you an eigenvalue that will bring you back in the past.''
+
+\sol{\input{dynamical_system_solutions/bonus}}
+\end{enumerate}

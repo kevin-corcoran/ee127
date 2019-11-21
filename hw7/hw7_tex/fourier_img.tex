@@ -1,0 +1,50 @@
+\qns{Fourier representation of images}
+
+In next week's homework, you will be using Fourier and Wavelet transforms in conjunction with LASSO optimization in order to do image compression. As there are no signals prerequisites for this class, we thought it might be beneficial to go over some of the basics that will make next week's assignment easier and make more sense. And, as this isn't a signals class, we will focus more on the linear algebra involved in signals theory, and just provide some broader context for what these transforms are doing. If these concepts seem interesting to you, we highly recommend you take some of the signals classes that Berkeley has to offer (EE120 and EE123 to name a few).
+
+\textbf{Fourier Transform Basics}
+
+The French mathematician Jean Baptiste Joseph Fourier discovered in 1822 that any periodic function can be expressed as the sum of sines and/or cosines of different frequencies, each multiplied by a different coefficient (called a Fourier series). It does not matter how complicated the function is; if it is periodic and satisfies some mild mathematical conditions, it can be represented by such a sum.
+
+It was later discovered that functions that are not periodic (but whose area under the curve is finite) can be expressed as the integral of sines and/or cosines multiplied by a weighing function. The formulation in this case is the Fourier transform, and its utility is even greater than the Fourier series in many theoretical and applied disciplines. Both representations share the important characteristic that a function, expressed in either a Fourier series or transform, can be reconstructed (recovered) completely via an inverse process, with no loss of information.
+
+This is one of the most important characteristics of these representations because it allows us to work in the “Fourier domain” and then return to the original domain of the function without losing any information\footnote{Rafael C. Gonzalez, Richard E. Woods - Digital Image Processing-Prentice Hall (2008)}.
+
+There are many "flavors" of the Fourier transform, but we will focus on the most applicable one for this class: the Discrete Fourier Transform (DFT). The DFT is defined for a one dimensional, length $N$ signal $x[n]$, as: $$X_k=\frac{1}{\sqrt{N}}\sum_{n=0}^{N-1}x[n]e^{-\frac{j2\pi}{N}kn}$$, where $x[n]$ is a signal in some time or spacial domain, and $X_k$ is its representation in frequency domain. You may be wondering where this $e^{-\frac{j2\pi}{N}kn}$ comes from. Using Euler's formula, we see that this term is equivalent to $\cos{(\frac{j2\pi}{N}kn)}-j\sin{(\frac{j2\pi}{N}kn)}$, which is nothing more than a complex combination of cosines and sines (as was discussed above).
+
+Now, how can we express this idea of a transform in more familiar, linear algebra terms? A one dimensional signal can be represented as a vector, and a \textbf{Fourier transform is just a change of basis from the unit vectors along each axis to these complex exponentials}.
+
+\begin{enumerate}
+\item 
+{[Algebraic expression and justification.}].
+Assume we have a length 3 signal $x\in\R{3}$. 
+Using the formula above, express the Fourier transform, $X\in\R{3}$ as $X=c\cdot\mathcal{F} x$, where $\mathcal{F}\in\R{3\times3}$ and $c\in\R{}$.
+\newline
+\sol{\input{Fourier_img_solutions/1}}
+\newline
+\item {[Algebraic expression.]} Come up with a relationship for the i,j entry of $\mathcal{F}$ and each basis function $\phi=e^{-\frac{j2\pi}{N}}$
+\newline
+\sol{\input{Fourier_img_solutions/2}}
+\end{enumerate}
+
+Another important property of the DFT matrix is that it is an \textbf{unitary} matrix (and equivalently and orthogonal change of basis). While the proof is not too complicated, it is somewhat out of the scope of the class. If you are interested you can check out the \href{https://www.dsprelated.com/freebooks/mdft/Orthogonality_DFT_Sinusoids.html}{orthogonality of the DFT basis function proof} and the \href{https://www.dsprelated.com/freebooks/mdft/Matrix_Formulation_DFT.html}{orthogonality of DFT Matrix proof}.
+
+\textbf{Fourier Transform and Images}
+
+Now that we have established the definition and math related to the Fourier transform, we can look at the more practical application of applying and using the Fourier transform with images.
+
+Before building some intuition of the motivations of using the Fourier transform, a quick note that when dealing with images we use a 2D DFT. It is the same as a 1D DFT along each dimension, and all the properties discussed above still apply. Additionally, inputs are now matrices instead of vectors, which is convenient for our representation of images.
+
+Now that we have some of the math and the background covered, it's time to cover the pertinent (at least to you) material - why are we discussing the DFT? Because the DFT is an orthonormal change of basis, it is an equivalent representation of our image. Moreover, in the Fourier domain, each "pixel" in the image corresponds to a different frequency present in each image. So, using the DFT, we can manipulate the various frequencies present in our image - and this enables us to do very powerful operations with some very simple code.
+
+Finally, we will also be using the Wavelet transform next week. While the details are well beyond the scope of this class, you can think of the Wavelet transform as analogous to the DFT, but with an additional (and very useful) property --- it is a sparse transformation. That is, natural signals are sparse in the Wavelet domain.
+
+\begin{enumerate}[start=3]
+    \item {[1--2 sentences.]}
+    What concept learned recently in class relates closely to the benefits of the Wavelet transform?
+    \sol{\input{Fourier_img_solutions/3}}
+\end{enumerate}
+
+Now, take a look at the ipython notebook \verb|image_transform_fundamentals|. You will not have to write any code, but it will walk you through some of the practical aspects of the topics we talked about, and help you build some intuition of the DFT.
+
+\textbf{Note}: The notebook imports \texttt{pywt}. Please install this package with \texttt{pip install pywavelets}. (\textit{Don't \texttt{pip install pywt} -- this is deprecated}).

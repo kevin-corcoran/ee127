@@ -1,0 +1,35 @@
+\qns{Gradients and Hessians}\\
+The \textit{gradient} of a scalar-valued function $g \; : \; \mathbb{R}^n \rightarrow \mathbb{R}$, is the column vector of length $n$, denoted as $\nabla g$, containing the derivatives of components of $g$ with respect to the variables:
+\begin{align*}
+(\nabla g(x))_i = \dfrac{\partial g}{\partial x_i} (x), \; i = 1,\hdots n.
+\end{align*}
+
+The \textit{Hessian} of a scalar-valued function $g \::\: \Real{n} \rightarrow \mathbb{R}$, is the $n \times n$ matrix, denoted as $\nabla^2 g$, containing the second derivatives of components of $g$ with respect to the variables:
+\[
+(\nabla^2 g(x))_{ij} = \frac{\partial^2 g}{\partial x_i \partial x_j}(x), \;\; i=1,\ldots,n, \;\; j=1,\ldots,n.
+\]
+
+For the remainder of the class, we will repeatedly have to take gradients and Hessians of functions we are trying to optimize. This exercise serves as a warm up for future problems.
+
+Compute the gradients and Hessians for the following functions:
+
+\begin{enumerate}
+\input{gradient/0}
+
+\sol{\input{gradient_solutions/0}}
+
+\input{gradient/1}
+
+\sol{\input{gradient_solutions/1}}
+
+\input{gradient/2}
+
+\sol{\input{gradient_solutions/2}}
+
+\input{gradient/3}
+
+\sol{\input{gradient_solutions/3}}
+\end{enumerate}
+
+
+% Consider the case now where all vectors and matrices above are scalar; do your answers above make sense? (No need to answer this in your submission)

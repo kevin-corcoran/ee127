@@ -1,0 +1,46 @@
+\qns{LASSO vs. Ridge}\rm
+
+Say that we have the data set $\{ (x^{(i)}, y^{(i)}) \}_{i=1,\dots, n}$ of features $x^{(i)} \in \Real{d}$ and values $y^{(i)} \in \Real{}$. Define $X = \begin{bmatrix} {x^{(1)}} & \dots & {x^{(n)}} \end{bmatrix}\tran$ and $y = \begin{bmatrix} y^{(1)} & \dots & y^{(n)} \end{bmatrix}\tran$.
+For the sake of simplicity, assume that the data
+has been centered and whitened so that
+each feature has mean $0$ and variance $1$ and the features are uncorrelated, i.e. $X\tran X = n I$.
+
+Consider the linear least squares regression with regularization in the $\ell_1$-norm, also known as LASSO:
+\[w^* = \arg \min_{w \in \Real{d}} \; \|X w - y\|_2^2 + \lam \|w\|_1\]
+
+This problem will compare $\ell_1$-regularization with $\ell_2$-regularization (ridge regression) to understand their similarities and differences. We will do this by looking at the elements of $w^*$ in the solution to each problem.
+
+\begin{enumerate}
+\qitem {[Few lines of justification]} First, decompose this optimization problem into $d$ univariate optimization problems over each element of $w$. Let $X = \begin{bmatrix}x_1 & \ldots & x_d\end{bmatrix}$.
+
+\newline
+\sol{\input{ridge_lasso_sol/1.tex}}
+\newline
+
+\qitem {[Short justification, 1-2 lines]} If $w_i^* > 0$, then what is the value of $w_i^*$? What is the condition on $y\top x_i$ for this to be possible?
+
+\newline
+\sol{\input{ridge_lasso_sol/2.tex}}
+\newline
+
+\qitem {[Short justification, 1-2 lines]} If $w_i^* < 0$, then what is the value of $w_i^*$? What is the condition on $y^\top x_i$ for this to be possible?
+
+\newline
+\sol{\input{ridge_lasso_sol/3.tex}}
+\newline
+
+\qitem {[Short justification, 1-2 lines]} What can we conclude about $w_i^*$ if $|y^\top x_i| \leq \dfrac{\lambda}{2}$? How does the value of $\lambda$ impact the individual entries $w_i^*$?
+
+\newline
+\sol{\input{ridge_lasso_sol/4.tex}}
+\newline
+
+\qitem {[Few lines of justification]} Now consider the case of ridge regression, which uses the the $\ell_2$ regularization $\lam \|w\|_2^2$.
+\[w^* = \arg \min_{w \in \Real{d}} \; \|X w - y\|_2^2 + \lam \|w\|_2^2\]
+What is the new condition for $w_i^*$ to be $0$? How does this differ from the condition obtained in part (d)? What does this suggest about LASSO?
+
+\newline
+\sol{\input{ridge_lasso_sol/5.tex}}
+\newline
+
+\end{enumerate}

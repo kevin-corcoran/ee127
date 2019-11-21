@@ -1,0 +1,119 @@
+\qns{Interpreting the data matrix}
+
+In several areas such as machine learning, statistics and data analysis you come across a data matrix $X$. Sometimes this matrix has dimensions $\R {m \times n}$ while other times it has dimensions $\R {n \times m}$ and it can get really confusing as to what exactly it represents. In this problem, we describe a way of interpreting the data matrix. \\
+
+First, what exactly is a data matrix? As the name suggests, it is a collection of data points. Suppose you are collecting data about courses offered in EECS department in Fall 2019. Each course has certain attributes or features that you are interested in. Possible examples of features are the number of students in the course, the number of GSIs in the course,the  number of units the course is worth, the size of the classroom that the course was taught in, the difficulty rating of the course in numerical (1-5) scale and so on. Suppose there were a total of 20 courses and for each course we have 10 features. Then we have 20 data points, with each data point being a 10-dimensional vector. We can arrange this in a matrix of size $20 \times 10$, where each row corresponds to values of different features for the same point, and each column corresponds to values of same feature for different points. \\
+
+Generalizing this, suppose we have $n$ data points with each point containing values for $m$ features (i.e each point lies in $m$-dimensional space) then our data matrix $X$ would be of size $n \times m$, i.e. $X \in \R {n \times m}$. We can interpret $X$ in the following two ways:
+\begin{enumerate}
+    \item $X = \bmat{\leftarrow \vec{x}_1^\top \rightarrow \\  \leftarrow \vec{x}_2^\top  \rightarrow \\ \vdots \\ \leftarrow \vec{x}_n^\top \rightarrow}$. \\
+    Here $\vec{x}_i \in \R m,\ i = 1, 2, \hdots, n,$ and $x_i^\top$ is a row vector that contains values of different features for the $i$th  data point. 
+    \item $X = \bmat{\uparrow & \uparrow & \hdots & \uparrow\\ \vec{x}^1 & \vec{x}^2 & \hdots & \vec{x}^m \\  \downarrow & \downarrow & \hdots & \downarrow}$.\\
+    Here $\vec{x}^j \in \R n, j = 1,2,\hdots,m$ and $\vec{x}^j$ is a column vector that contains values of the the $j$th feature for different data points. Note that in several places you will encounter the case where the columns are referred to as $\vec{x}_1, \vec{x}_2, \dots$ instead but it is important to understand the context and be clear on what the column represents.
+\end{enumerate}
+
+Consider the matrix $X$ as described above. We explore how we can manipulate the data matrix to get some desirable properties. 
+\begin{enumerate}
+\qitem Suppose we want to compute a vector that contains the mean value for each feature. What is the length of the vector containing mean value of the features?  Which of the following python commands will give us the mean value of the features:
+\begin{enumerate}
+    \item feature\_means = numpy.mean(X, axis = 0)
+    \item feature\_means = numpy.mean(X, axis = 1)
+\end{enumerate}
+\sol{ 
+\input{solution_data_matrix/1.tex}
+}
+
+\qitem Suppose we want to compute the standard deviation of each feature. What is the dimension of the vector containing standard deviation of the features? Which of the following python commands will give us the standard deviation of the features:
+\begin{enumerate}
+    \item feature\_stddevs = numpy.std(X, axis = 0)
+    \item feature\_stddevs = numpy.std(X, axis = 1)
+\end{enumerate} 
+\sol{ 
+\input{solution_data_matrix/2.tex}
+}
+\qitem Suppose we want every feature \emph{``centered''}, i.e. the feature is zero mean. How would you achieve this?
+
+\sol{
+\input{solution_data_matrix/3.tex}
+}
+\qitem Suppose we want every feature \emph{``standardized''}, i.e the feature is zero mean and has unit variance. How would you achieve this?
+
+\sol{\\
+\input{solution_data_matrix/4.tex}
+}
+
+\qitem Another metric of interest is the covariance matrix, which tells us how different features are related to each other. What is the size of the covariance matrix?:
+\begin{enumerate}
+    \item $n \times n$
+    \item $m \times m.$
+\end{enumerate}
+\emph{Hint: Is the number of features $m$ or $n$?}
+
+\sol{
+\input{solution_data_matrix/5.tex}
+}
+\qitem For rest of the problem assume that the data matrix is centred so every feature is zero mean. Let $C$ denote the covariance matrix. Show that $C$ can be represented in the following ways:
+\begin{align*}
+    C &= \frac{X\tran X}{n} \\
+    C &= \frac{1}{n}\sum\limits_{i=1}^n \vec{x}_i \vec{x}_i\tran.
+\end{align*}
+Recall that $\vec{x}_i\tran$ is the $i$th row of $X$.
+
+\sol{
+\input{solution_data_matrix/6.tex}
+}
+
+\qitem Let the $(i,j)$ entry of $C$ ($c_{ij}$) denote the covariance between feature $i$ and feature $j$. Then which of the following is true?
+\begin{enumerate}
+    \item $c_{ij} = \frac{1}{m}(\vec{x}^i)^\top \vec{x}^j$
+    \item $c_{ij} = \frac{1}{n}(\vec{x}^i)^\top \vec{x}^j$.
+\end{enumerate}
+Recall that $\vec{x}^i$ is the $i$th column of $X$.
+
+\sol{
+\input{solution_data_matrix/7.tex}
+}
+
+
+\qitem Recall that our data points are the rows of $X$ and these lie in a $m$-dimensional space. Suppose we are interested in taking the projection of the points onto a one-dimensional subspace  in $\mathbb{R}^m$ spanned by the unit vector $u$.  Sometimes this is referred to informally  as ``Projecting points along direction $u$''. Then which of the following is true:
+\begin{enumerate}
+    \item $\vec{u} \in \R m$
+    \item $\vec{u} \in \R n$
+\end{enumerate}
+\emph{Hint: Think about how many points we have and what dimension a single point lies in.}
+
+
+\sol{
+\input{solution_data_matrix/8.tex}
+}
+\qitem Note there are three different interpretations of the term ``projection'' and these are used interchangeably with abuse of notation which can make it confusing at times.\\ Consider vectors $\vec{a}$ and $\vec{b}$ in $\R n$. Let $\vec{b}$ be unit norm (i.e $\vec{b}\tran \vec{b} = 1$). Then we have:
+\begin{enumerate}
+    \item The \textbf{vector projection} of $\vec{a}$ on $\vec{b}$ is given by $(\vec{a}\tran \vec{b})\vec{b}$. Note that is a vector in $\R n$.
+    \item The \textbf{scalar projection} of $\vec{a}$ on $\vec{b}$ is given $\vec{a}\tran \vec{b}$. This is a scalar but can take both positive and negative values.
+    \item The \textbf{projection length} of $\vec{a}$ on $\vec{b}$ is given by $|\vec{a} \tran \vec{b}|$, and is the absolute value of the scalar projection.
+\end{enumerate}
+Recall that our data points are the rows of $X$. Suppose we want to obtain a column vector, $\vec{z} \in \R n$ containing scalar projections of points along the direction given by the unit vector $\vec{u}$. Show that this is given by, 
+\begin{equation*}
+    z = X\vec{u}.
+\end{equation*}
+
+\sol{
+\input{solution_data_matrix/9.tex}
+}
+
+\qitem Suppose we treat $\vec{z} = (z_1, z_2, \hdots. z_n)$ as samples of a random variable $Z \in \R{}$ corresponding to the scalar projection along direction $\vec{u}$.  We are interested in calculating empirical variance of the scalar projections. Show that this can be calculated as
+\begin{equation*}
+    \sigma^2_z = \frac{1}{n} \vec{u}\tran X\tran X \vec{u} = \vec{u}\tran C \vec{u}.
+\end{equation*}
+\emph{Hint: The empirical variance is given by, $\sigma^2_z = \frac{1}{n}\sum\limits_{i=1}^n(z_i - \mu_z)^2$, where  $\mu_z = \frac{1}{n}\sum\limits_{i=1}^n z_i$, is the empirical mean. Recall that $X$ is assumed to be centered.}
+
+\sol{
+ \input{solution_data_matrix/10.tex}
+}
+
+\end{enumerate}
+
+
+
+
+

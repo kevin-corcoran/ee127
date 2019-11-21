@@ -1,0 +1,23 @@
+%!TEX root = ./SolsManual.tex
+\qns{Eigenvectors of a symmetric matrix }
+
+Let $\vec{p},\vec{q} \in \Real{n}$ be two linearly independent vectors, with unit norm ($\|\vec{p}\|_2 = \|\vec{q}\|_2 = 1$). Define the symmetric matrix $A\doteq \vec{p}\vec{q}\tran+\vec{q}\vec{p}\tran$. In your derivations, it may be useful to use the notation $c \doteq  \vec{p}\tran \vec{q}$.
+\begin{enumerate}
+\qitem Show that $\vec{p}+\vec{q}$ and $\vec{p}-\vec{q}$ are eigenvectors of $A$, and determine the corresponding eigenvalues.\\
+\sol{
+ \input{solution_symm_eigenvectors_2by2/1.tex}
+}
+\qitem Determine the nullspace and rank of $A$. \\
+\sol{
+ \input{solution_symm_eigenvectors_2by2/2.tex}
+}
+\qitem Find an eigenvalue decomposition of $A$, in terms of $\vec{p},\vec{q}$. \emph{Hint:} use the previous two parts.\\
+\sol{
+ \input{solution_symm_eigenvectors_2by2/3.tex}
+}
+\qitem What is the answer to the previous part if $\vec{p},\vec{q}$ are not normalized? Write $A$ as a function $\vec{p},\vec{q}$ and their norms and the new eigenvalues as a function of $\vec{p},\vec{q}$ and their norms.
+
+\sol{
+ \input{solution_symm_eigenvectors_2by2/4.tex}
+}
+\end{enumerate}

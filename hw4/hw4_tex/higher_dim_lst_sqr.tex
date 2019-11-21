@@ -1,0 +1,47 @@
+\qns{Higher dimension least-square}
+
+You are a world renowned animal specialist who has been studying the movement of animals to answer the pivotal question of our generation: can we approximate the movement of animals as a mathematical function? You controversially believe this is possible, and decide to test your hypothesis by observing the hunt of a tiger. You go to the best place to observe tigers, the Ranthambore National Park in Rajasthan, India, and set up a place where you can observe these majestic creatures hunt.
+
+After a week in the wilderness, you have observed the tiger and realize that when it hunts, it moves according to a cubic function. However, your qualitative observations are insufficient if you are to convince the rest of the animal behavior scientists that your hypothesis holds true. You need to give them the exact function that describes how the tiger moves.
+
+\begin{enumerate}
+\item Luckily, you wrote down your exact observations of the tiger at 4 distinct points in the form of (x, y) coordinates, given below. As you know thanks to CS70, we have enough information to solve for a cubic polynomial. Using the points given, setup a system of linear equations in the form $\mathbf{A}\vec{x} = b$ that you can use to solve for the polynomial.
+Hint: Any cubic function can be described as $ax^3 + bx^2 + cx + d$ for some $a, b, c, d$.
+
+\begin{center}
+ \begin{tabular}{c | c} 
+ x & y \\ [0.5ex] 
+ \hline
+ 1 & 8 \\ 
+ 2 & 12 \\
+ 3 & 10  \\
+ 4 & -4  \\
+\end{tabular}
+\end{center}
+
+\newline
+\sol{\input{higher_dim_lst_sqr_sol/1.tex}}
+\newline
+
+\item Decompose the $\mathbf{A}$ matrix you constructed in the previous part using QR decomposition. How could you use this decomposition to solve for $\vec{x}$? Note: You may use a calculator (including Python or other scripting languages) to speed up algebraic work. Round to 3 decimal places and make sure to show your work. If using Python etc., please calculate everything explicitly (don't just call a library!).
+
+\newline
+\sol{\input{higher_dim_lst_sqr_sol/2.tex}}
+\newline
+
+Unfortunately, you need to leave the beauty of the wilderness and return to Berkeley for your EECS127 midterm (how inconvenient!). However, you would like to continue collecting data and work on your hypothesis remotely. So, you leave behind some sensors that can track the tiger hunt for you. Now that we have sensors, we have imperfect readings (because the sensors will have some noise and inaccuracies). Rather than take 4 exact measurements, we take many measurements to try to approximate the tiger's path.
+
+\newline
+\item How would you update your setup in part (a)? How can we solve this system?
+
+\newline
+\sol{\input{higher_dim_lst_sqr_sol/3.tex}}
+\newline
+
+\item (Jupyter Notebook) Follow the instructions in the Jupyter notebook in order to solve the new system in part (c)
+
+\newline
+\sol{\input{higher_dim_lst_sqr_sol/4.tex}}
+\newline
+
+\end{enumerate}

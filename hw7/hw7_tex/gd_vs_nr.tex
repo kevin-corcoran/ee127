@@ -1,0 +1,102 @@
+\qns{Gradient Descent vs Newton-Raphson}\\
+In this problem, we will explore the performance (in terms of convergence properties) of first order and second-order optimization algorithms. \\
+Gradient Descent (GD) is a first-order iterative optimization algorithm that uses the first derivative information to find the optimal value of a function.\\
+Newton-Raphson (NR) Method, applied in optimization settings, is a second-order iterative algorithm that effectively finds the solution of the first derivative of a function, which is nothing but the optimal value of the function.\\
+
+To find the optimal value of a function $f(x)$, we usually start with an initial guess $x_0$ and then iterate over till convergence properties are met.\\
+Let the optimization problem in hand is 
+\[
+\min_{x \in \Real{m}} f(x)\\
+\]
+Using gradient descent, the iteration step is,
+\begin{align*}
+    x_{n+1} = x_n - \nabla f(x_n),\;\;\text{for n = 0,1,2,$\cdots$}
+\end{align*}
+Using Newton-Raphson method, the iteration step is,\\
+\begin{align*}
+    x_{n+1} = x_n - {[Hf(x_n)]}^{-1}\nabla f(x_n),\;\;\text{for n = 0,1,2,$\cdots$}
+\end{align*}
+where $Hf(x_n)$ is the hessian of $f(x)$ computed at $x_n$
+\begin{enumerate}
+    \item 
+    For a paraboloid given by,
+    \begin{align*}
+        f(x) = x_1^2 + x_2^2 - 8x_1 + 2x_2 + 17
+    \end{align*}
+    \begin{enumerate}
+        \item 
+        {[Find algebraic expression.]} Find the expression for the first derivative of $f(x)$, $\nabla f(x)$.
+        
+        \sol{
+        \input{gd_vs_nr_solutions/1i.tex}
+        }
+        \item
+        {[Find algebraic expression.]} Find the expression for hessian of $f(x)$, $Hf(x)$.
+        
+        \sol{
+        \input{gd_vs_nr_solutions/1ii.tex}
+        }
+        \item
+        {[Find numeric expression.]} Compute the value of $x^*$, at which the optimum is achieved for $f(x)$.
+        
+        \sol{
+        \input{gd_vs_nr_solutions/1iii.tex}
+        }
+        \item
+        {[Jupyter notebook.]}
+        With an initial assumption $x_0 = \begin{bmatrix}8\\3\end{bmatrix}$, perform 100 iterations of gradient descent and Newton-Raphson with a step size = 0.9, in Jupyter Notebook. Plot the path taken by $x$ in the 100 steps towards optimum for both the algorithms.
+        
+        \sol{
+        \input{gd_vs_nr_solutions/1iv.tex}
+        }
+        \item \label{part1} {[A few sentences.]}
+        What did you observe about the path taken by $x$ towards optimum for both the algorithms in this case?
+        
+        \sol{
+        \input{gd_vs_nr_solutions/1v.tex}
+        }
+    \end{enumerate}
+    \item
+    For a halfpipe given by,
+    \begin{align*}
+        f(x) = \text{cosh}(\epsilon x_1^2 + x_2^2),\;\;\text{where $\epsilon$ = 0.05, and cosh(x) is the hyperbolic $\cos$ function}
+    \end{align*}
+    \begin{enumerate}
+        \item 
+        {[Find algebraic expression.]}
+        Find the expression for the first derivative of $f(x)$, $\nabla f(x)$.
+        
+        \sol{
+        \input{gd_vs_nr_solutions/2i.tex}
+        }
+        \item
+        {[Find algebraic expression.]}
+        Find the expression for hessian of $f(x)$, $Hf(x)$.
+        
+        \sol{
+        \input{gd_vs_nr_solutions/2ii.tex}
+        }
+        \item
+        {[Jupyter Notebook.]}
+        With an initial assumption $x_0 = \begin{bmatrix}-2\\0.9\end{bmatrix}$, perform 5000 iterations of gradient descent and Newton-Raphson with a step size = 0.1, in Jupyter Notebook. Plot the path taken by $x$ in the 5000 steps towards optimum for both the algorithms.
+        
+        \sol{
+        \input{gd_vs_nr_solutions/2iii.tex}
+        }
+        \item \label{part2}
+        {[A few sentences.]}
+        What did you observe about the path taken by $x$ towards optimum for both the algorithms in this case?
+        
+        \sol{
+        \input{gd_vs_nr_solutions/2iv.tex}
+        }
+    \end{enumerate}
+    \item
+    {[A few sentences.]}
+    Which of the algorithms provides a more efficient path towards the optimum ($x^*$), starting from the same initial point? Justify your answer with proper reasoning.
+    
+    \sol{
+        \input{gd_vs_nr_solutions/3.tex}
+    }
+\end{enumerate}
+\textit{Bonus:} Change the step size in Jupyter Notebook for both the cases and notice the change in optimization paths. (Note: This will not be graded)

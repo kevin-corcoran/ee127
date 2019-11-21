@@ -1,0 +1,85 @@
+\qns{Gradient Descent $\times$ The Laplacian}
+
+We are given an undirected simple graph $G=(V,E)$ where $V=\{1,\ldots,n\}$ is the set of vertices and $E\subseteq V\times V$ is the set of edges joining vertices. Since $G$ is undirected, for $i,j\in V$, we have $(i,j)\in E\Leftrightarrow (j,i)\in E$. Let $d_i$ be the degree of vertex $i\in V$, i.e. the number of edges incident to the vertex. We define the Laplacian matrix $L\in\R{n\times n}$ as
+\begin{equation*}
+    L_{ij}=
+    \begin{cases}
+    d_i & i=j\\
+    -1 & (i,j)\in E\\
+    0 & \text{otherwise}
+    \end{cases}.
+\end{equation*}
+Equivalently, $L=D-A$, where $D$ is the diagonal matrix defined by $D_{ii}=d_i$, and $A$ is the adjacency matrix.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics{"figures/UndirectedGraph"}
+    \caption{An undirected simple graph.}
+    \label{fig:graph}
+\end{figure}
+
+\begin{enumerate}
+    \item {[Write the matrix.]} Form the Laplacian for the graph shown in Figure~\ref{fig:graph}.
+    
+    \sol{\input{laplacian_GD_solutions/1.tex}}
+    \item {[A couple lines of justification.]}
+    Show that in general, the Laplacian $L$ for any undirected $G=(V,E)$ is symmetric.
+    
+    \sol{\input{laplacian_GD_solutions/2.tex}}
+    \item {[Algebraic justification.]}
+    Show that for any $x\in \R{n}$,
+    \begin{equation*}
+        x\tran L x=\dfrac{1}{2}\sum_{(i,j)\in E}(x_i-x_j)^2.
+    \end{equation*}
+    Deduce that $L\succeq 0$.
+    
+    \sol{\input{laplacian_GD_solutions/3.tex}}
+    \item {[Short justification and eigenvector.]}
+    Show that zero is always an eigenvalue of $L$. Exhibit a corresponding eigenvector.
+    
+    \sol{\input{laplacian_GD_solutions/4.tex}}
+    \item {[Algebraic justification.]}
+    Consider the problem of assigning weights $x\in\R{n}$ to each vertex $i\in V$ such that the sum of the weights is close to one and each pair of adjacent vertices has similar weights. That is, we want the solution to the optimization problem
+    \begin{equation*}
+        x^*=\argmin_{x\in\R{n}} \sum_{(i,j)\in E}(x_i-x_j)^2+2\lambda\left(\sum_{i\in V}x_i-1\right)^2
+    \end{equation*}
+    where $\lambda\in\R{}$ is a constant. Here, the first term inside the $\argmin$ penalizes adjacent vertices with highly differing weights, while the second term forces the sum of the weights to be close to one. Show that this optimization problem is equivalent to
+    \begin{equation*}
+        x^*=\argmin_{x\in\R{n}} \dfrac{1}{2}x\tran (L+\lambda \vec{1}\vec{1}\tran)x-\lambda \vec{1}\tran x
+    \end{equation*}
+    where $\vec{1}$ is the all-ones vector in $\R{n}$.
+    
+    \sol{\input{laplacian_GD_solutions/5.tex}}
+    \item {[Algebraic expression and short justification.]}
+    What is the optimal $x^*$?
+    
+    \sol{\input{laplacian_GD_solutions/6.tex}}
+    \item {[Algebraic justification.]}
+    Suppose we use gradient descent with step size $\eta>0$ to find the optimal $x^*$. Write the gradient descent step, i.e. express $x_{k+1}$, the $(k+1)$th step of gradient descent, in terms of $x_k$, $L$, $\eta$, and $\lambda$.
+    
+    \sol{\input{laplacian_GD_solutions/7.tex}}
+    \item {[Algebraic justification.]}
+    Show that $x_{k+1}-x^*=(I-\eta(L+\lambda\vec{1}\vec{1}\tran))(x_k-x^*)$.
+    
+    \sol{\input{laplacian_GD_solutions/8.tex}}
+    \item {[Algebraic justification.]}
+    Deduce that $\|x_k-x^*\|_2\leq \rho^k\|x_0-x^*\|_2$ for some $\rho\in\R{}$, where $x_0$ is the starting point of the gradient descent. Express $\rho$ in terms of $\eta$, $\lambda$ and the eigenvalues $\lambda_1\geq\ldots\geq\lambda_n$ of $L$. Assume $\lambda$ is given such that $\lambda_1>n\lambda>\lambda_{n-1}$.
+    
+    \sol{\input{laplacian_GD_solutions/9.tex}}
+    \item {[Algebraic expression and justification.]}
+    Find the number of time steps gradient descent takes to converge to some $\varepsilon>0$ around $x^*$ as a function of $\eta$, assuming $\|x_0-x^*\|_2>\varepsilon$ (since we are not lucky enough to start gradient descent near the optimal point). That is, find $t(\eta)$ such that $\|x_{t(\eta)}-x^*\|_2\leq \varepsilon$. Express $t(\eta)$ in terms of $x_0$, $x^*$, $\lambda$, and $\lambda_1,\ldots,\lambda_n$. Note that $t(\eta)$ should be an integer-valued function.
+    
+    \sol{\input{laplacian_GD_solutions/10.tex}}
+    \item {[Algebraic expression and justification.]}
+    To maximize our rate of convergence, we find the optimal step size $\eta^*=\argmin_{\eta>0}t(\eta)$. Express $\eta^*$ and $t(\eta^*)$ in terms of $\lambda,\lambda_1,\ldots,\lambda_n$.
+    
+    
+    \sol{\input{laplacian_GD_solutions/11.tex}}
+    \item {[A few sentences.]}
+    It turns out the ratio $\kappa=\lambda_1/\lambda_{n-1}$ is inversely related to how connected the graph $G$ is. For example, highly connected graphs such as the complete graph $K_n$ or the hypercube have relatively small values of $\kappa$, while poorly connected graphs such as the 2D grid or a single path have large values of $\kappa$. (If interested, look into conductance of a graph and Cheeger's inequality). Assuming we choose the optimal step size $\eta^*$, how does the connectivity of the graph affect the rate of convergence? Do you expect gradient descent for graphs with higher values of $\kappa$ to converge slower or faster than that for graphs with lower $\kappa$?
+   
+    \textit{Hint:} The function $f(x)=\dfrac{x-1}{x+1}$ is monotonically increasing for $x\geq 1$.
+    
+    \sol{\input{laplacian_GD_solutions/12.tex}}
+    
+\end{enumerate}

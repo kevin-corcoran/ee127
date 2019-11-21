@@ -1,0 +1,306 @@
+\qns{3D reconstruction and pose estimation from two images}
+\newline
+In this exercise, we will be learning about how to reconstruct a 3D object from two images taken from non-purely rotational views of the object. To do this, we will first estimate the rotation and translation (rigid body motion) between the two views. Next, we will use this to estimate the 3D position of points belonging to the object. 
+
+\textbf{Note:} You may skip the portions in color, although you are encouraged to read through them. They should give you sufficient background information to make this problem more meaningful and there may be a bonus midterm question on some of the concepts.
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\linewidth]{figures/two_view_camera_setup.png}
+    \caption{A 3D point $\mathbf{p}$, projected on two image planes. Projected points have coordinate $\mathbf{x}_{0}, \mathbf{x}_{1}$. The two views are related by the rotation $R$ and translation $t$. }
+    \label{fig:two_view_image}
+\end{figure}
+\newline
+{\color{red}
+\textbf{How a camera works:}
+\newline
+Essentially, a camera works by taking a point in 3D space and projecting it onto a 2D image (plane). A common mathematical model for this camera projection model is the perspective camera model. Under this model, a camera projection can be viewed as follows: 
+\newline
+Let $\mathbf{p} = [X,Y,Z]$ be a point in 3D space $\mathbb{R}^3$, then the 2D projection of this point via the camera is modeled via the equation:
+\begin{equation}
+    Z
+    \begin{bmatrix}
+        x \\
+        y \\
+        1
+    \end{bmatrix}
+    = K
+     \begin{bmatrix}
+        X \\
+        Y \\
+        Z
+    \end{bmatrix}
+    = K\mathbf{p}
+\end{equation}
+where $K \in \mathbb{R}^{3 \times 3}$, known as the camera matrix is generally of the form
+\begin{equation*}
+    \begin{bmatrix}
+        fs_x  & fs_{\theta} & c_x \\
+        0 & fs_y & c_y \\
+        0 & 0 & 1
+    \end{bmatrix},
+\end{equation*} with the contents being physical properties of the camera. 
+\newline
+Here, $x,y$ are the coordinates of the projected point on the image plane. In what follows, we will denote $\mathbf{x} = [x,y,1]^{T}$. 
+
+\textbf{Two views:}
+\newline
+\newline
+When we have two views of the same point, we can think of it simply as the same point viewed by two cameras at different locations $c_1, c_2$.  The camera locations are related by the rigid motion $R, t$ where $R$ is a rotation matrix in SO(3) and $t$ is a translation vector $\mathbb{R}^3$.  SO(3) is the set of rotation matrices in $\mathbb{R}^{3 \times 3}$, i.e. the set of all orthonormal matrices with determinant = 1 in $\mathbb{R}^{3\times 3}$
+\newline
+\newline
+% TODO, properties of rotation matrix
+\textbf{Pose estimation:}
+\newline
+\newline
+Putting both pieces together, we can derive an equation relating the coordinates of the projections of a point in both image planes.  We will also assume that both cameras have the same camera matrix, $K$. Let $\mathbf{x}_{0},\mathbf{x}_{1} $ be the coordinates of the projection of the 3D point $\mathbf{p}$ in camera views 0 and 1 respectively. We fix the global coordinate frame to be at the camera location in view 0, so that a point $\mathbf{p}$ in view 0 has coordinate $R\mathbf{p} + t$ in view 1. Then, we can write that: 
+\begin{align}
+    & Z_{1}\mathbf{x}_1 = K(R\mathbf{p} + t) = K(RZ_{0}K^{-1}\mathbf{x}_{0} + t) \\
+    & \implies Z_{1}K^{-1}\mathbf{x}_{1} = RZ_{0}K^{-1}\mathbf{x}_{0} + t 
+\end{align}
+We assume that we know $K$, so we can write $K^{-1}\mathbf{x} = \tilde{\mathbf{x}}$ for any $\mathbf{x}$.
+\begin{equation}
+    \implies Z_{1}\tilde{\mathbf{x}}_1 = Z_{0}R\tilde{\mathbf{x}}_0  + t
+\end{equation}
+
+We may take the cross product of both sides with $t$, to obtain. 
+\begin{equation}
+    Z_{1}(t \times \tilde{\mathbf{x}}_1) = Z_{0}(t \times R\tilde{\mathbf{x}}_0 )
+\end{equation}
+
+Taking the dot product with $\tilde{\mathbf{x}}_{1}$,  and noting that the dot product of othorgonal vectors is zero, we obtain 
+\begin{align}
+Z_{1}{\tilde{\mathbf{x}}_{1}}^T(t \times &\tilde{\mathbf{x}}_1) = Z_{0}{\tilde{\mathbf{x}}_{1}}^T(t \times R\tilde{\mathbf{x}}_0 )\\
+\implies 0 &= Z_{0}{\tilde{\mathbf{x}}_{1}}^T(t \times R\tilde{\mathbf{x}}_0 )\\
+\implies 0 &= {\tilde{\mathbf{x}}_{1}}^T(t \times R\tilde{\mathbf{x}}_0 )\\
+&= {\tilde{\mathbf{x}}_{1}}^T E\tilde{\mathbf{x}}_0. \label{eq:Epipolar_Constraint}
+\end{align}
+where we define $E=t\times R$.
+}
+\newline
+\textbf{Problem setup:}
+\newline
+Given a point $\mathbf{p} \in \mathbb{R}^3$, and its projection to images in two views $\mathbf{\tilde{x}}_{0} = [\tilde{x}_0, \tilde{y}_0, 1]^T,\mathbf{\tilde{x}}_{1} = [\tilde{x}_1, \tilde{y}_1, 1]^T $ respectively, and asumming both views are related through a rotational matrix $R \in$ SO(3) (the 3D rotation group SO(3) is the group of rotation matrices [i.e. orthonormal and determinant $=1$] in $\mathbb{R}^{3\times 3}$, corresponding to rotations about the origin in $\mathbb{R}^3$) and translation vector $t \in \mathbb{R}^3$. The geometric relationship between the projections in the two views, is given by:
+\begin{equation}
+    {\tilde{\mathbf{x}}_{1}}^T E\tilde{\mathbf{x}}_0  = 0,
+\end{equation}
+where 
+\begin{equation}
+    E = [t]_{\times}R.
+\end{equation}
+\newline
+\newline
+The matrix $E = [t]_{\times}R$ is known as the \textit{essential matrix}. The cross product matrix $[t]_{\times}$ is a skew -symmetric matrix (i.e. $[t]_{\times}^\top=-[t]_{\times}$) representing the cross product of $t$ with any appropriately sized vector. It returns the $\mathbf{0}$ vector when pre- and post-multiplied by the same vector, since the cross product is orthogonal to its factors. Concretely, given a vector $t = [t_0, t_1, t_2]^T$,
+\begin{equation}
+t \times x = [t]_{\times}x
+=
+    \begin{bmatrix}
+    0 & -t_{2} & t_{1} \\
+    t_{2} & 0 & -t_{0} \\
+    -t_{1} & t_{0} & 0
+    \end{bmatrix}
+    x
+\end{equation} 
+for any appropriately sized vector $x$.
+
+\paragraph{1.1. Properties of the Essential Matrix:}\ 
+
+A nonzero matrix $E \in \mathbb{R}^{3 \times 3}$ is said to be an essential matrix if and only if 
+\begin{enumerate}
+\item 
+It has a singular value decomposition $E = U \Sigma V^{T}$, with 
+\begin{equation*}
+\Sigma = 
+    \begin{bmatrix}
+    \sigma & 0 & 0\\
+    0 & \sigma & 0\\
+    0 & 0 & 0
+    \end{bmatrix}
+\end{equation*}
+\item
+ and $U, V \in$ SO($3$), i.e. $U,V$ are rotation matrices. Note that in general, the $U,V$ matrices of an SVD are only required to be orthorgonal, the extra requirement here is the the det($U$) = det($V$) = 1, making $U,V$ rotation matrices.
+ \end{enumerate}
+ 
+ The space of matrices with the properties above is known as the \textit{essential space}.
+ 
+ \paragraph{1.2. Estimating the Essential Matrix:}\ 
+ 
+ The equation \eqref{eq:Epipolar_Constraint} is linear in $E$. To see this, given the projections $\mathbf{\tilde{x}}_{0}, \mathbf{\tilde{x}}_{1}$ of a point $\mathbf{p}$ in view 0 and view 1 respectively, where
+ $\mathbf{\tilde{x}}_{0} = [\tilde{x}_0, \tilde{y}_0, 1]^T$ and $\mathbf{\tilde{x}}_{1} = [\tilde{x}_1, \tilde{y}_1, 1]^T$ and the essential matrix $E$ is written as 
+ \begin{equation}
+ E = 
+     \begin{bmatrix}
+     e_{11} & e_{12} & e_{13} \\
+     e_{21} & e_{22} & e_{23} \\
+     e_{31} & e_{32} & e_{33} 
+     \end{bmatrix},
+ \end{equation}
+ 
+ we may re-write equation \eqref{eq:Epipolar_Constraint} as 
+ $\mathbf{a}^{T}E^{s} = 0 $, with:
+ \newline
+ $\mathbf{a} = [\tilde{x}_{1}\tilde{x}_{2}, \tilde{x}_{1}\tilde{y}_{2}, \tilde{x}_{1}, \tilde{y}_{1}\tilde{x}_{2}, \tilde{y}_{1}\tilde{y}_{2}, \tilde{y}_{1}, \tilde{x}_{2}, \tilde{y}_{2}, 1]^T$
+ \newline 
+ $E^{s} = [e_{11},e_{21},e_{31},e_{12},e_{22},e_{32},e_{13},e_{23},e_{33}]^{T}$
+ \newline
+ \newline
+ Given $n$ points $p_0, \hdots, p_{n-1}$ and their projections in both views, we may construct a system of linear equations:
+ \begin{equation}\label{eq:Min_norm_approximation_of_essential_matrix}
+   \mathcal{X}E^{s} = 0  
+ \end{equation}
+ 
+ with $\mathcal{X} \coloneqq [\mathbf{a}_{0},\mathbf{a}_{1},\hdots, \mathbf{a}_{n-1}]^{T}$. For the basic algorithm, we will need at least eight of these points. Once we have solved for $E^{s}$, we may rearrange to components to obtain $E$.
+ 
+ In practice, due to noise in measurements of the points and their projections, $\mathcal{X}$ may not have a non-trivial nullspace and we will have to be satisfied with solving
+ \begin{equation}\label{eq:Min_norm_approximation_of_essential_matrix2}
+    \underset{E^{s}}{\text{min }} ||\mathcal{X}E^{s}||^{2}_2
+ \end{equation}
+ instead of \eqref{eq:Min_norm_approximation_of_essential_matrix}.
+ In general, the solution to this minimization problem need not lie in the essential space --- once we find a solution $F$ to the above problem, we will need to project it onto the Essential Space.
+ 
+\begin{enumerate}
+\item{\textbf{Projection onto the Essential Space}}
+    Given a matrix $F \in \mathbb{R}^{3 \times 3}$, with SVD $F = U\Sigma V^T$, and $U,V \in$ SO(3), find the solution $E^{*}$ to the following problem:
+    \begin{equation}
+        \underset{ E \in \mathcal{E}}{\text{argmin }} ||E - F||_{f}^{2}.
+    \end{equation}
+    
+    Here $||.||_{f}$ is the Frobenius norm, and $\mathcal{E}$ is the essential space. You should assume that $ E^{*} = U \Sigma_{\sigma} V^{T}$, i.e. $F$ and $E^{*}$ share the same matrices $U,V\in$ SO(3) matrices. 
+    
+    \textit{Hint:} $\Sigma_{\sigma}$ should be of the form 
+    \begin{equation*}
+        \begin{bmatrix}
+        \sigma & 0 & 0 \\
+        0 & \sigma & 0 \\
+        0 & 0 & 0
+        \end{bmatrix}
+    \end{equation*}
+    \newline
+    
+    \sol{\input{3D_reconstruction/1.1.tex}}
+    
+\item{\textbf{Recovering the translation vector:}}
+    Recall that $E = [t]_{\times}R$. Show that the translation vector $t$ is in the left null space of $E$. 
+    \newline
+    
+\sol{\input{3D_reconstruction/1.2.tex}}
+\item
+    Unfortunately, we cannot say more than this, given just the essential matrix $E$. We may estimate the direction of $t$ as a unit norm vector in the left null space of $E$. In addition, this procedure gives us two solutions, since for any unit norm vector $\hat{t}$ in the left null space of $E$, $-\hat{t}$ is also a valid solution. Later we will see how to recover the proper sign. 
+    \newline 
+    \newline
+    Write a procedure in the IPython notebook to recover the two directions of translation from the essential matrix $E$ using SVD. Normalize the resulting translation vector before returning it.
+    \newline
+    
+    \sol{\input{3D_reconstruction/1.3.tex}}
+    
+\item{\textbf{Recovering the Rotation matrix:}}
+    Next, we will attempt to recover the rotation between both views. Because we only know the estimate of the essential matrix up to sign, $\pm E$ are both solutions to our minimization problem \eqref{eq:Min_norm_approximation_of_essential_matrix2}, and also because typical SVD algorithms do not provide a guarantee that the $U,V$ matrices are rotation matrices, we will have four different solutions for our rotation matrix, from which only two will be true rotation matrices, i.e. det($R$) = 1. 
+    
+    Given an essential matrix of the form $E = U \Sigma V^T$, and defining 
+    \begin{equation*}
+        R_{Z}^T(\frac{\pi}{2}) = 
+        \begin{bmatrix}
+             0 & 1 & 0 \\
+             -1 & 0 & 0 \\
+             0 & 0 & 1 
+        \end{bmatrix}, 
+        R_{Z}^T(-\frac{\pi}{2}) = 
+         \begin{bmatrix}
+             0 & -1 & 0 \\
+             1 & 0 & 0 \\
+             0 & 0 & 1 
+        \end{bmatrix},
+    \end{equation*} we can obtain the four estimates for the rotation matrix $R$ as, 
+    \begin{equation*}
+        R = \pm U R_{Z}^T(\pm \frac{\pi}{2}) V^{T}.
+    \end{equation*}.
+    
+    We choose the two $R$'s with positive determinants to be our estimates for $R$. We will see how to settle on the final answer later.  Write a procedure in the Ipython notebook to return the valid rotation matrices from a given essential matrix $E$.
+
+    \sol{\input{3D_reconstruction/1.4.tex}}
+    
+\item{\textbf{Estimating 3D position from 2D matches: Triangulation}}
+
+    Our next step is to estimate the 3D position of a point $\mathbf{p}$, given its projection onto the two views $\mathbf{x}_0 = [x_0, y_0, 1]^T, \mathbf{x}_1 = [x_1, y_1, 1]^T$, an estimate of the rotation $R$ and translation $t$ between the two views, and camera parameters in the camera matrix $K$ (recall that $K^{-1}\mathbf{x} = \tilde{\mathbf{x}}$. For clarity, $\mathbf{x}, \tilde{\mathbf{x}}$ are both projections of a 3D point, but in different units ).
+    
+    The full derivation of this solution is beyond the scope of this course; however, to obtain the 3D position of the point $\mathbf{p}$, we start by constructing the matrices
+    \begin{equation}
+        P_0 = K[I_{3\times 3},\mathbf{0}_{3 \times 1}] =
+        \begin{bmatrix}
+           \leftarrow P_{0}^{1T} \rightarrow \\
+           \leftarrow P_{0}^{2T} \rightarrow \\
+           \leftarrow P_{0}^{3T} \rightarrow \\
+        \end{bmatrix}
+        \in \mathbb{R}^{3 \times 4}, \hspace{5pt}
+        P_1 = K[R,t] =
+        \begin{bmatrix}
+           \leftarrow P_{1}^{1T} \rightarrow \\
+           \leftarrow P_{1}^{2T} \rightarrow \\
+           \leftarrow P_{1}^{3T} \rightarrow \\
+        \end{bmatrix}
+        \in \mathbb{R}^{3 \times 4}.
+    \end{equation}
+    Note that the notation $P_{*}^{1T}, P_{*}^{2T}, P_{*}^{3T}$ are just the rows of $P_{*}$, they have nothing to do with  $\mathbf{p}$.
+    \newline
+    \newline
+    Then we construct the matrix 
+    \begin{equation}
+        A = 
+        \begin{bmatrix}
+        x_0(P_{0}^{3T}) - P_{0}^{1T} \\
+        y_0(P_{0}^{3T}) - P_{0}^{2T} \\
+        x_1(P_{1}^{3T}) - P_{1}^{1T} \\
+        y_1(P_{1}^{3T}) - P_{1}^{2T} \\
+        \end{bmatrix}
+        \in \mathbb{R}^{4 \times 4}.
+    \end{equation}
+    
+    Then the following equation helps us find the 3D point $\mathbf{p}$
+    \begin{equation}
+        A
+        \begin{bmatrix}
+        \mathbf{p} \\
+        1
+        \end{bmatrix}
+        = \mathbf{0}_{4 \times 1}.
+    \end{equation}
+    
+    Here, we are simply looking for an element in the nullspace of $A$ with $1$ as the fourth component. To find $\mathbf{p}$, we may simply find a (non-trivial) element in the null space of $A$ , divide this vector by its 4th component and take the first 3 components of the resulting vector as $\mathbf{p}$.
+    \newline
+    \newline
+    Write a procedure in your Ipython notebook to triangulate a point $\mathbf{p}$, given its projection onto both images $\mathbf{x}_0, \mathbf{x}_1$ an estimate of $P_0, P_1$.
+    \sol{\input{3D_reconstruction/1.5.tex}}
+    
+\item 
+    Now that you have completed the triangulation function, we will make use of it to select the optimal $R, t$ from the 4 different combinations (2 for $R$, and 2 for $t$) of $R,t$ we had previously. \newline
+    \newline
+    Essentially, we will triangulate a set of 3D points from the projections of those points and choose the combination of $R,t$ that gives us most points in front of the camera, i.e. the z-coordinates (in a camera system the z direction points outwards)  of the points are positive. False combinations would give us a lot of points behind the camera, but we wouldn't have been able to see those points if this was the case.
+    \newline
+    \newline
+    We have written most of this function for you, but want you to choose the best combination of $R,t$ given a count of the number of points in front of the camera. Complete this part of the function in your IPython notebook. 
+    \newline
+    
+    \sol{\input{3D_reconstruction/1.6.tex}}
+    
+\item{\textbf{Reconstructing a chair from two views}}
+    \begin{figure}[!h]
+    \centering
+    \begin{subfigure}{.5\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{figures/view_0.jpg}
+      \caption{View 0}
+      \label{fig:sub1}
+    \end{subfigure}%
+    \begin{subfigure}{.5\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{figures/view_1.jpg}
+      \caption{View 1}
+      \label{fig:sub2}
+    \end{subfigure}
+    \caption{Two views of the same scene}
+    \end{figure}
+    \newline
+    \newline
+    Finally, we are able to put all these ideas together to reconstruct an object. We have chosen to reconstruct the chair in the scenes below. Run all the cells of the Ipython notebook. Do you see a 3D chair? Take a screenshot  of the chair with all parts visible and attach to your write up.
+    
+    \sol{\input{3D_reconstruction/1.7.tex}}
+\end{enumerate}

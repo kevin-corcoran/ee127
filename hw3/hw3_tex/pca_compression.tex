@@ -1,0 +1,34 @@
+\qns{PCA and low-rank compression}
+
+We are given a $m \times n$ matrix $X = [\vec{x}_1,\ldots,\vec{x}_n]$, with $\vec{x}_i \in \Real{m}$, $i=1,\ldots,n$ being the data points. (Note that this is the transpose of the $n\times m$ data matrix seen in the previous exercise.) We assume that the data matrix is centered, in the sense that $\vec{x_1}+\ldots+\vec{x_n} = \vec{0}$. In lecture, it was asserted that there is equivalence between three problems:
+\begin{itemize}
+	\item[($P_1$)] Finding a line going through the origin that maximizes the variance of the points projected on the line.
+	\item[($P_2$)] Finding a line going through the origin that minimizes the sum of squares of the distances from the points to their projections;
+	\item[($P_3$)] Finding a rank-one approximation to the data matrix.
+\end{itemize}
+In this exercise, you are asked to show the equivalence between these three problems. 
+
+\begin{enumerate}
+\item Consider the problem of projecting a point $\vec{x}$ on a line ${\cal L} = \{\vec{x}_0 + v \vec{u} \::\: v \in \Real{}\}$,
+with $\vec{x}_0 \in \Real{m}$,
+$\vec{u}^T\vec{u}=1$, given. 
+
+Show that the projected point $\vec{z}$ is given by 
+$$\vec{z} = \vec{x}_0+v^* \vec{u},$$
+where we define 
+$$v^* = (\vec{x}-\vec{x}_0)^\top\vec{u},$$
+and that the minimal squared distance $\|\vec{z}-\vec{x}\|_2^2$ is equal to $\|\vec{x}-\vec{x}_0\|_2^2 - ((x-x_0)^Tu)^2$.
+
+\sol{\input{compression_solutions/1}}
+\item Show that problems $P_1,P_2$ are equivalent.
+
+\sol{\input{compression_solutions/2}}
+\item Show that $P_3$ is equivalent to $P_1$. 
+
+\emph{Hint: } Show that the data matrix is rank-one if and only if it can be expressed as the outer product of two vectors. Recall that $P_3$ involves minimization of a Frobenius norm, and try to use some properties of this norm.
+
+\sol{\input{compression_solutions/3}}
+\item[Bonus.] Find the rank-one approximation of the entire EECS127/227AT material. What are the subjects that are the most likely to be at the finals?
+
+\sol{\input{compression_solutions/bonus}}
+\end{enumerate}

@@ -1,0 +1,43 @@
+\qns{Gram-Schmidt}
+\newline
+Any set of $n$ linearly independent vectors in $\mathbb R^n$ could be used as a basis for $\mathbb R^n$. However, certain bases could be more suitable for certain operations than others. For example, an orthonormal basis could facilitate solving linear equations.
+
+\begin{enumerate}
+
+\item Given a matrix $A \in \mathbb R^{n \times n}$, it could be represented as a multiplication of two matrices
+\[ A = Q R, \]
+where $Q$ is a unitary matrix (its columns form an orthonormal basis for $\mathbb R^n$) and $R$ is an upper-triangular matrix. For the matrix $A$, describe how Gram-Schmidt process could be used to find the $Q$ and $R$ matrices, and apply this to 
+\[ A = 
+\begin{bmatrix} 3 & -3 & 1\\
+4 & -4 & -7 \\
+0 & 3 & 3
+\end{bmatrix}
+\] 
+to find a unitary matrix $Q$ and an upper-triangular matrix $R$.
+
+\sol{\input{GS_solutions/1}}
+
+\item Given an invertible matrix $A \in \mathbb R^{n \times n}$ and an observation vector $b \in \mathbb R^n$, the solution to the equality
+ \[ A x = b \]
+is given as $x = A^{-1}b$. For the matrix $A = QR$ from part (a), assume that we want to solve
+\[ A x = \begin{bmatrix}
+8 \\ -6 \\ 3
+\end{bmatrix}. \]
+By using the fact that $Q$ is a unitary matrix, find $\overline b$ such that
+\[ R x = \overline b. \]
+
+Then, given the upper-triangular matrix $R$ and $\overline b$ in part (c), find the elements of $x$ \underline{sequentially}.
+
+\sol{\input{GS_solutions/2}}
+
+\item Describe how your solution in the previous problem is akin to Gaussian elimination in solving a system of linear equations.
+
+\sol{\input{GS_solutions/3}}
+
+\item Given an invertible matrix $B \in \mathbb R^{n \times n}$ and an observation vector $c \in \mathbb R^n$, find the computational cost of finding the solution $z$ to the equation $Bz = c$ by using the $QR$ decomposition of $B$. Assume that $Q$ and $R$ matrices are available, and adding, multiplying, and dividing scalars take one unit of ``computation". 
+
+As an example, computing the inner product $a\tran b$ is said to be $O(n)$, since we have $n$ scalar multiplications total -- one for each $a_i b_i$. Similarly, matrix vector multiplication is $O(n^2)$, since matrix vector multiplication can be viewed as computing $n$ inner products. The computational cost for inverting a matrix in $\mathbb R^n$ is $O(n^3)$, and consequently, the cost grows rapidly as the set of equations grows in size. This is why the expression $A^{-1}b$ is usually not computed by directly inverting the matrix $A$. Instead, the $QR$ decomposition of $A$ is exploited to decrease the computational cost.
+
+\sol{\input{GS_solutions/4}}
+
+\end{enumerate}

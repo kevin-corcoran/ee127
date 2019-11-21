@@ -1,0 +1,148 @@
+\qns{City migrations as matrix iterations: the transition matrix}
+
+In this exercise we are interested in the evolution of the demographics of cities.
+We represent migration as a transition process between cities inside a graph.
+This transition process can be represented in a matrix.
+We are interested in some properties of this matrix that can be exploited to better understand the system.
+
+The exercise includes questions on the iPython notebook ``city\_migration.ipynb''.
+
+We consider that all the cities are part of a big network. 
+The network is represented as a graph which is a set of vertices in $V = \{1,...,n\}$, with an edge joining any pair of vertices in a set $E \subseteq V \times V$.
+Every vertex represents a city. 
+There exists an edge between the city $i$ and the city $j$ if there is human migration between the city $i$ and the city $j$.
+
+% \todo[inline]{Add a story: \dots Remove the word probability and Markov process.}
+
+% We are given a graph as a set of vertices in $V = \{1,...,n\}$, with an edge joining any pair of vertices in a set $E \subseteq V \times V$. 
+% We assume that the graph is undirected (without arrows), meaning that $(i,j)\in E$ implies $(j,i)\in E$.
+We define the transition matrix of the graph $T$ by:
+\[
+T_{ij} = \left\{ 
+\begin{array}{ll}
+p_{i,j} & \mbox{if } (i,j) \in E, \\
+0 & \mbox{otherwise.}
+\end{array}
+\right.
+\]
+Where $p_{i,j}$ is the annual percentage of people that leave the city $i$ to go to the city $j$.
+
+Where $p_{i,i}$ represents the annual percentage of people that stay in the city $i$.
+
+Because city population is non-negative, and because it is assumed that each city's population can only change from people entering/exiting from/to other cities (i.e. the total population in the network of cities remains constant over years), we have that:
+\begin{align*}
+    p_{i,j}\geq 0 &, \quad \quad \forall\ i,j \\
+    \sum\limits_{j} p_{i,j} = 1 &, \quad \quad \forall\ i \quad \quad
+\end{align*}
+
+We denote $m_{i,t}\geq 0$ the population of the city $i\in V$ at the year $t$. 
+We note $\vec{m}_t = (m_{i,t})_{i\in V}$.
+
+\begin{enumerate}
+\item Explain why, in this model, the population of every city at the year $t+1$ can be computed as $T\tran \vec{m}_{t}$.
+
+\sol{\input{migration_solution/1}}
+\item Show that if $\lambda$ is an eigenvalue of $T$, then $|\lambda|\leq 1$.
+
+\textit{Hint:} Consider using $\|\cdot\|_\infty$.
+
+\sol{\input{migration_solution/2}}
+\item Show that $1$ is always an eigenvalue of $T$. State an eigenvector $\vec{v}$ of $T$ associated with the eigenvalue $1$, such that $\|\vec{v}\|_2 = 1$.
+
+\sol{\input{migration_solution/3}}
+\item Show that the total population over every city is constant over time: e.g. show that $\| T\tran\vec{m}\|_1 = \| \vec{m} \|_1$.
+
+\sol{\input{migration_solution/4}}
+\item Show that finding all the eigenvectors associated with the eigenvalue $1$ is equivalent to find $N(I-T)$. We do not consider the case of the zero vector.
+
+\textit{Hint:} Consider an eigenvector $v$ of $T$ associated with the eigenvalue $1$ and show that $v\in N(I-T)$. Then consider $u\in N(I-T)$ and show that $u$ is an eigenvector of $T$ associated with the eigenvalue $1$.
+
+\sol{\input{migration_solution/5}}
+\item Let's consider an eigenvector $\vec{v}$ of $T$ associated with the eigenvalue $1$. Consider $i=\arg\min\limits_j v_j$ and $\vec{u} = \vec{v}- v_i \mathbf{1}$. Show that $T\vec{u}=\vec{u}$, $\vec{u}\geq 0$ and $u_i = 0$.
+
+\sol{\input{migration_solution/6}}
+\item Show that $e_i^\top T^n \vec{u} = 0$.
+
+\sol{\input{migration_solution/7}}
+\end{enumerate}
+
+One can show that (the proof can be shown through calculus):
+\[e_i^\top T^n \vec{u} = \sum\limits_j \left(\sum\limits_{i_1,\dots,i_n} T_{i,i_1} \left( \prod\limits_{k=1}^{n-1} T_{i_k, i_{k+1}} \right) T_{i_n, j} u_j\right)\]
+
+\begin{enumerate}
+\setcounter{enumi}{7}
+\item Show that $\forall j, {i_1,\dots,i_n}, \  T_{i,i_1} \left( \prod\limits_{k=1}^{n-1} T_{i_k, i_{k+1}} \right) T_{i_n, j} u_j \geq 0$.
+
+\sol{\input{migration_solution/8}}
+\item Conclude that $\forall j, {i_1,\dots,i_n},\  T_{i,i_1} \left( \prod\limits_{k=1}^{n-1} T_{i_k, i_{k+1}} \right) T_{i_n, j} u_j = 0$
+
+\sol{\input{migration_solution/9}}
+\end{enumerate}
+
+\textbf{Definition (strongly connected)}: A graph is strongly connected if there is a path between any pair of vertices of the graph.
+
+One can also show that if the graph is strongly connected then (the proof is similar to the one for the exercise on the representation of a graph as an adjacency matrix):
+\[\forall j, \exists n, \exists i_1,\dots,i_n,\ T_{i,i_1} \left( \prod\limits_{k=1}^{n-1} T_{i_k, i_{k+1}} \right) T_{i_n, j} \neq 0\]
+
+
+Now let assume that the graph is strongly connected. We are interested to now all the possible eigenvectors associated with the eigenvalue $1$.
+
+\begin{enumerate}
+\setcounter{enumi}{9}
+\item Show that $\forall j, u_j = 0$.
+
+\sol{\input{migration_solution/10}}
+\item Conclude that $\vec{v} = v_i \mathbf{1}$.
+
+\sol{\input{migration_solution/11}}
+\item State what is $N(I-T)$ when the graph is strongly connected.
+
+\sol{\input{migration_solution/12}}
+\end{enumerate}
+
+Now let assume that $T$ is symmetric.
+\begin{enumerate}
+\setcounter{enumi}{12}
+\item Explain what is the meaning of a symmetric transition matrix for the city's population.
+
+\sol{\input{migration_solution/13}}
+\end{enumerate}
+
+
+Now let assume that the graph is strongly connected, that $T$ is symmetric and that $-1$ is not an eigenvector of $T$.
+\begin{enumerate}
+\setcounter{enumi}{13}
+\item Show that $\lim \limits_{l\rightarrow \infty} T^l = \frac{\mathbf{11}^\top}{n}$.
+
+\textit{Hint:} use answers of question b., c. and l.
+
+\sol{\input{migration_solution/14}}
+\item Conclude that if $T$ is constant over time, if $T$ is symmetric, if the graph of the cities is strongly connected, and if $-1$ is not an eigenvalue of $T$, then the population of every city will be the same after a given time.
+
+\sol{\input{migration_solution/15}}
+\item The exercise continues on the iPython notebook ``city\_migration.ipybn''. Please answer the question ask there.
+\end{enumerate}
+
+\begin{enumerate}
+\item[Bonus.] Show that the previous answer is false if Stanford and Berkeley are part of the cities considered.
+
+\sol{\input{migration_solution/bonus}}
+\end{enumerate}
+
+
+Some of you might have recognize that $p$ can be interpreted as a probability, and that the transition matrix can be interpreted as a stochastic matrix. 
+The equation $\mathbf{m}_{t+1} = T^\top \mathbf{m}_{t}$ encodes a Markov process.
+
+If you enjoyed this exercise feel free to take a look at:
+\begin{itemize}
+    \item For the maths lovers
+    \begin{itemize}
+        \item The Perron-Frobenius theorem: \url{https://en.wikipedia.org/wiki/Perron–Frobenius_theorem#Applications}
+        \item Stochastic matrix on Wikipedia: \url{https://en.wikipedia.org/wiki/Stochastic_matrix}
+    \end{itemize}
+    \item For the sociologists
+    \begin{itemize}
+        \item Bonacich, P. (1987) \href{http://www.leonidzhukov.net/hse/2014/socialnetworks/papers/Bonacich-Centrality.pdf}{‘Power and Centrality: A Family of Measures’}, American Journal of Sociology, 92, 1170 – 82.
+        \item Freeman, L. C. (1978/79) \href{http://www.leonidzhukov.net/hse/2018/sna/papers/freeman79-centrality.pdf}{‘Centrality in Social Networks: Conceptual Clarification’}, Social Networks, 1, 215 – 39.
+    \end{itemize}
+\end{itemize}

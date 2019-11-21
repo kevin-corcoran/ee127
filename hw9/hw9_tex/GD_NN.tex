@@ -1,0 +1,130 @@
+\qns{Gradient Descent Algorithm on a Simplified Neural Network }\rm
+
+% {Previously in Homework 2}, we made an introduction to the gradient descent algorithm. 
+Given a continuous and differentiable function $f: \mathbb R^n \to \mathbb R$, we noted that the gradient of $f$ at any point $x$, $\nabla f(x)$, is orthogonal to the level curve of $f$ at that point, and it points in the increasing direction of $f$.
+In other words, moving from point $x$ in the direction $-\nabla f(x)$ leads to an increase in the value of $f$, while  moving in  the  direction  of $−\nabla f(x)$  decreases  the  value  of $f$.
+We used this fact to come up with the gradient descent algorithm in order to minimize the function $f$:
+\[ x_{k+1} = x_k - \eta \nabla f(x_k). \]
+In this update rule, the parameter $\eta \in (0, \infty)$ represents the step size, or the learning rate, of the algorithm.
+
+% \textbf{In Homework 2}, we used the gradient descent algorithm to solve
+% \begin{equation}
+% \min_{x\in \mathbb R^n} \  f(x) = \frac{1}{2} \| Ax - b\|_2^2
+% \label{eqn:ols}
+% \end{equation}
+% for some $A \in \mathbb R^{m \times n}$ and $b \in \mathbb R^m$, where $A$ has full column rank. We showed that the gradient descent algorithm on this function gives the update rule
+%  \[ x[k+1] = x[k] - \eta \left( A^\top A x[k] -A^\top b \right). \]
+% % which is equivalent to
+% % \[ \left( x[k+1] - (A^\top A)^{-1}A^\top b \right) = \left( I - \eta A^\top A\right) \left( x[k] - (A^\top A)^{-1}A^\top b \right).
+% %     \]
+% After making the change of variable $w_k := x_k - (A^\top A)^{-1}A^\top b$, we could write this update rule as
+% \[ w_{k+1} = (I - \eta A^\top A) w_k. \]
+% We showed that this update rule converges from every initialization as long as the minimum and maximum eigenvalues of $(I - \eta A^\top A)$ satisfied
+% \[ -1 < \lambda_\text{min} \le \lambda_\text{max} < 1, \]
+% and we used this condition to find the range of values for the learning rate $\eta$.
+
+% Similar to problem (\ref{eqn:ols}), in this howework, we will study the minimization of squared-error-loss with the gradient descent algorithm. This time, however, we will consider a simplified version of a neural network in our setting.
+
+Assume that we are given a set of points $\{x_1, x_2, \dots, x_N\}$ in $\mathbb R^n$, and we receive the observations $\{y_1, \dots, y_N\}$ in $\mathbb R^m$, where
+    \[ y_i = R x_i \quad \forall i \in \{1, \dots, N\}. \]
+    The matrix $R \in \R^{N \times N}$ is unknown, and our goal is to estimate $R$ given the input points $\{x_i\}_{i=1}^N$ and the observations $\{y_i\}_{i=1}^N$. For this purpose, we will solve
+    \[ \min_{W \in \mathbb R^{p \times q}} \ {1 \over 2} \| y_i - AWBx_i\|_2^2, \]
+    where $A \in \mathbb R^{m \times p}$ and $B \in \mathbb R^{q\times n}$ are two fixed matrices. In this problem, the mapping
+    \[ x_i \mapsto AWB x_i \]
+    represents a simplified (linearized) three-layer neural network, where the first, second, and the third layers of the network are represented by the matrices $B, W$ and $A$, respectively. We assume that $A$ and $B$ are fixed, and we are trying to find the optimal value of $W$ in order to estimate the input-output relation between $\{x_i\}_{i=1}^N$ and $\{y_i\}_{i=1}^N$.
+    
+ \textbf{Assume that the input points are normalized such that $\sum_{i=1}^N x_i x_i^\top = I$.}
+
+\begin{enumerate}
+    
+    \qitem  Using the fact that the input points satisfy $\sum_{i=1}^N x_ix_i^\top = I$  and $y_i = Rx_i$ for all $i \in \{1, \dots, N\}$, show that
+    \[
+    \sum_{i=1}^N \|y_i - AWB x_i \|_2^2 = \text{tr}(M^\top M),
+    \]
+    where $M:= R-AWB$.
+    
+    % \emph{Hint:} Note that \(\sum_{i=1}^N \|y_i - AWBx_i\|_2^2 = \sum_{i=1}^N \|(R-AWB)x_i\|_2^2\), and define \(M \coloneqq R-AWB\). First, show that \(\sum_{i=1}^N \|y_i - AWBx_i\|_2^2 = \text{tr}(M^TM) \). 
+    
+    
+    \sol{\input{GD_NN_solutions/1.tex}}
+    
+    \qitem Show that the gradient descent algorithm for the problem 
+    \[ \min_{W \in \mathbb R^{p \times q}} \dfrac{1}{2} \sum_{i=1}^N \|y_i - AWBx_i\|_2^2 \]
+    leads to the update rule
+    \[ W_{k+1} = W_k + \eta \left( A^\top R B^\top -  A^\top A W_k BB^\top \right),
+    \]
+    where $\eta$ is the learning rate of the algorithm.
+    
+    \emph{Hint: } First, write an equivalent problem using part (a). Then use the cyclic shift property of the trace as well as the product rule for taking the gradient. 
+    % Refer to Problem 1(d) in Discussion 2 for taking gradient of a quadratic function of a matrix, and use a similar argument to 
+    Then show that
+    $\nabla_W \text{tr}(B^\top W^\top A^\top AWB)  = 2 A^\top A W BB^\top$.
+    
+    \sol{\input{GD_NN_solutions/2.tex}}
+    
+    
+    
+    \qitem So far in the class, we have seen eigenvectors as special vectors associated with square matrices. However, we can define eigenvectors for every linear mapping (or operator) defined in arbitrary vector spaces, as long as the mapping takes every element in that vector space and maps it to a point in the same vector space.
+
+
+
+For example, the set of $m$-by-$n$ matrices, $\mathbb R^{m \times n}$, is a vector space, and every $m$-by-$n$ matrix is a ``vector" in this vector space.
+Within this vector space, we can define linear mappings whose inputs and outputs are matrices. Furthermore,
+we can define eigenvalues and ``eigenvectors" for these linear mappings as long as they take points from $\mathbb R^{m \times n}$ and map them to points in $\mathbb R^{m \times n}$.
+
+
+For example, given $f : \mathbb R^{m \times n} \to \mathbb R^{m \times n}$, if
+\[ f(X_0) = \lambda X_0  \quad \text{for some } \ \lambda \in \mathbb R, \ X_0 \in \mathbb R^{m \times n}, \]
+then $X_0$ is an eigenvector of the mapping $f$, and $\lambda$ is an eigenvalue of the mapping $f$. 
+\\\\
+Now consider the update rule of the algorithm obtained in part (b):
+    \begin{align} W_{k+1} 
+    % & = W_k - \eta A^\top A W_k BB^\top + \eta A^\top RB^\top \\
+    & = h(W_k) + \eta A^\top RB^\top \label{eqn:state-update}
+    \end{align}
+    where we define
+    \[ h(W_k) = W_k - \eta A^\top A W_k BB^\top.\]
+    If the minimum and maximum eigenvalues of $h$ satisfy
+    \begin{equation} -1 < \lambda_\text{min}(h) \le \lambda_\text{max}(h) < 1,
+    \label{eqn:cond-grad}
+    \end{equation}
+    then $W_k$ converges to a solution for every initialization. What is the range of values $\eta$ can take so that the condition (\ref{eqn:cond-grad}) is satisfied?\\
+    \emph{Hint: Consider the form of the ``eigenvectors" of $h(\cdot)$. In particular, show that the eigenvectors of $h$ are of the form $uv^\top$, where $u$ and $v$ are the eigenvectors of some matrices that you will identify.}
+
+\sol{\input{GD_NN_solutions/3.tex}}
+    
+    \item Assume $A$ is full column-rank and $B$ is full row-rank. What does $W_k$ converge to with the update rule (\ref{eqn:state-update})?
+    
+    \textit{Hint: When $W_k$ converges, we will have $W_{k+1} = W_{k}$, hence the gradient computed in part (b) must be zero.}
+    
+    \sol{\input{GD_NN_solutions/4.tex}}
+    
+    \item Now assume that the weight matrices $A$ and $B$ for the first and the third layers of the network are not fixed, and they are also updated by the gradient descent algorithm. Consequently, we have the update rule for $(A_k, W_k, B_k)$ as:
+    \begin{align*}
+        A_{k+1} & = A_k + \eta \left( RB_k^\top W_k^\top - A_kW_kB_kB_k^\top W_k^\top\right), \\
+        W_{k+1} & = W_k + \eta \left( A_k^\top RB_k^\top - A_k^\top A_kW_kB_kB_k^\top \right), \\
+        B_{k+1} & = B_k + \eta \left(
+        W_k^\top A_k^\top R - W_k^\top A_k^\top A_k W_k B_k 
+        \right).
+    \end{align*}
+    The weight matrices $(A_k, W_k, B_k)$ can converge to a solution $(A, W, B)$ only when all eigenvalues of the mapping
+    \[
+    \mathcal L(E) = \eta \left(
+    EB^\top W^\top WB + AA^\top E B^\top B + AWW^\top A^\top E
+    \right)
+    \]
+    are less than 2. Find an upper bound on the learning rate $\eta$ for convergence of the algorithm to a global solution, i.e., to a point which satisfies $AWB = R$.
+    
+    Note that, the condition you will give for this part will only be a necessary condition; whereas the condition in part (c) is both necessary and sufficient for convergence to the global optimum. 
+    
+    \emph{Hint:} Use the result from (d) for this part.
+    
+    \sol{\input{GD_NN_solutions/5.tex}}
+    
+    
+
+
+
+
+
+\end{enumerate}

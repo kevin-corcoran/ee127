@@ -1,0 +1,49 @@
+\qns{General optimization}
+
+In this exercise, we test your understanding of the general framework of optimization and its language. We consider an optimization problem in standard form: 
+\[
+p^* = \min_{x \in \Real{n}} \: f_0(x) ~:~ f_i(x) \le 0, \;\; i=1,\ldots,m.
+\]
+In the following we denote by ${\cal X}$ the feasible set. For the following statements, provide a proof or counter-example.
+
+	
+\begin{enumerate}
+\item 
+{[Short justification, 1--2 lines.]} Any optimization problem can be expressed as one with a linear objective. 
+
+\sol{\input{general_optim_solutions/1}}
+\item 
+{[Short justification, 1--2 lines.]} Any optimization problem can be expressed as one without any constraints. 
+
+\sol{\input{general_optim_solutions/2}}
+\item 
+{[Short justification, 1--2 lines.]} Any optimization problem can be recast as a linear program, provided one allows for an infinite number of constraints. 
+
+\sol{\input{general_optim_solutions/3}}
+\item 
+{[Short justification, 1--2 lines.]} If one inequality is strict at the optimum, then we can remove it from the original problem and obtain the same solution. 
+
+\sol{\input{general_optim_solutions/4}}
+\item 
+{[A few lines of justification.]} If the problem involves the minimization over more than one variable, say $y$ and $x$, then we can exchange the minimization order without altering the optimal value:
+		\[
+		\min_x\min_y \: F_0(x,y) = \min_y\min_x \: F_0(x,y)
+		\]
+
+
+\sol{\input{general_optim_solutions/5}}
+\item 
+{[A few lines of justification.]} If the problem involves the minimization of an objective function of the form
+		\[
+		f_0(x) = \max_y \: F_0(x,y),
+		\]
+        in which case
+        \[ p^* = \min_{x \in \mathcal{X}} \max_y F_0(x, y)\]
+		then $p^* \ge d^*$, where
+		\[
+		d^* := \max_y \: \min_{x \in {\cal X}} \: F_0(x,y),
+		\]
+		where ${\cal X}$ is the feasible set of the original problem. {\em Hint:} consider the function $y \rightarrow \min_{x'} \: F_0(x',y)$ and a similar function of $x$.
+
+\sol{\input{general_optim_solutions/6}}
+\end{enumerate}

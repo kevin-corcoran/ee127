@@ -1,0 +1,36 @@
+\qns{Computation and Geometric Interpretation of Singular Value Decomposition (SVD)}
+
+Consider the $2 \times 2$ matrix
+\[
+A = \frac{1}{\sqrt{10}} \left( \begin{array}{c} 2 \\ 1 \end{array}\right)
+\left( \begin{array}{cc} 1 & -1 \end{array}\right)
++ \frac{2}{\sqrt{10}}
+\left( \begin{array}{c} -1 \\ 2 \end{array}\right)
+\left( \begin{array}{cc} 1 & 1 \end{array}\right).
+\]
+\begin{enumerate}
+\item What is an SVD of $A$? Express it as $A = U S V\tran$, with $S$ the diagonal matrix of singular values ordered in decreasing fashion. Make sure to check all the properties required for $U,S,V$.
+
+\sol{
+\input{solution_svd_compute/1.tex}
+}
+\item Find the semi-axis lengths and principal axes of the ellipsoid 
+\[
+{\cal E}(A) = \left\{ Ax ~: x \in \Real{2} , \;\; \|x\|_2 \le 1 \right\}.
+\]
+{\em Hint:} Use the SVD of $A$ to show that every element of ${\cal E}(A)$ is of the form $y = U\bar{y}$ for some element $\bar{y}$ in ${\cal E}(S)$. That is, ${\cal E}(A) = \{ U\bar{y} \::\: \bar{y} \in {\cal E}(S) \}$.  (In other words the matrix $U$ maps ${\cal E}(S)$ into the set ${\cal E}(A)$.) Then analyze the geometry of the simpler set ${\cal E}(S)$.
+
+\sol{
+\input{solution_svd_compute/2.tex}
+}
+\item What is the set ${\cal E}(A)$ when we append a zero vector after the last column of $A$, that is $A$ is replaced with $\tilde{A} = [A,0] \in \Real{2 \times 3}$?
+
+\sol{
+\input{solution_svd_compute/3.tex}
+}
+\item Same question when we append a row after the last row of $A$, that is, $A$ is replaced with $\tilde{A} = [A\tran,0]\tran \in \Real{3 \times 2}$. Interpret geometrically your result.
+
+\sol{
+\input{solution_svd_compute/4.tex}
+}
+\end{enumerate}
