@@ -1,0 +1,20 @@
+\qns{Ridge Regression Classifier Vs. SVM}\rm
+
+In this problem, we explore Ridge Regression as a classifier, and compare it to SVM. Recall Ridge Regression solves the problem
+
+\begin{equation*}
+    \min_w \|Xw - y\|_2^2 + \lambda \|w\|_2^2,
+\end{equation*}
+
+where $X \in \mathbb{R}^{m, n}$, and $y \in \mathbb{R}^n$
+
+\begin{enumerate}
+    \item {[A few lines explanation]} Ridge Regression as is solves a regression problem. Given data $X \in \mathbb{R}^{m \times n}$ and labels $y \in \{0, 1\}^m$, explain how we might be able to train a Ridge Regression model and use it to classify a test point.
+    
+    \sol{\input{svm_vs_ridge_sol/1.tex}}
+    
+    \item {[Notebook]}
+    Complete the accompanying Jupyter Notebook to compare Ridge Regression and SVM. 
+    
+    \sol{\input{svm_vs_ridge_sol/2.tex}}
+\end{enumerate}

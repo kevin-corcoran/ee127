@@ -1,0 +1,37 @@
+\qns{Dual of a QP and differentiability}\rm
+
+Consider a quadratic program of the form
+\[
+p^* = \max_x \: c{\tran} x - \frac{1}{2}x{\tran} Qx ~:~ Ax \le b,
+\]
+where $A \in \Real{m\times n}$, $b \in \Real{m}$, $c \in \Real{n}$, and $Q \in \Sympp{n}$. We assume that the problem is feasible.
+\begin{enumerate}
+	\item {[A few lines]}Form the dual of the QP. Show that strong duality holds.
+	
+	\sol{\input{duality_qp_solutions/1.tex}}
+	\item 
+	{[A few lines of justification]}
+	Show that $p^*$, considered as a function of $c$ (resp.\ $b$), is convex (resp.\ concave).
+	
+	\sol{\input{duality_qp_solutions/2.tex}}
+	\item 
+	{[1-2 lines]}
+	{[A few lines of justification]}
+	For any convex function $f: \mathbb{R}^n \rightarrow \mathbb{R}$, we say the vector $g \in \mathbb{R}^n$ is a subgradient of $f$ at $x \in \text{\textbf{dom} } f$ if for all $z \in \text{\textbf{dom} } f, f(z) \geq f(x) + g^{\top}(z-x)$.  The subgradient of $f$ at $x$ need not  be unique. The set of all subgradients of $f$ at $x$ is known as the subdifferential and is denoted by $\partial f(x)$. 
+	
+	Suppose $f$ is the pointwise maximum of subdifferentiable (subdifferential exists at every point) convex functions $f_1, f_2, \cdots f_m$, so that $f(x) = \underset{i}{\text{max}} f_i(x)$. Then, a subgradient of $f$ at $x$ is any vector $g$ such that $g \in \partial f_{k}$ where $k$ is any index such that $f_{k}(x) = f(x)$. In words, to find a subgradient of the maximum of functions at a point, we can choose one of the functions that achieves the maximum at that point, and choose any subgradient of that function at the point. This follows from the fact that $f(z) \geq f_{k}(z) \geq f_{k}(x) + g^{\top}(z-x) = f(x) + g^{\top}(z-x)$. (See section $8.2.3$ in the course text for more details on subgradients).
+	
+	
+	
+	Explain how to form a subgradient of $p^*$ considered as a function of $c$. You may assume subdifferentiability wherever it is helpful.
+	
+	\sol{\input{duality_qp_solutions/3.tex}}
+	
+	\item {[1-2 lines]}
+	The convex function $f$ is differentiable iff the subgradient at every point is unique. 
+	
+	
+	Is $p^*$ differentiable with respect to $c$?
+	
+	\sol{\input{duality_qp_solutions/4.tex}}
+\end{enumerate}

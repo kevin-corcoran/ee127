@@ -1,0 +1,63 @@
+\qns{A matrix problem with strong duality}\rm
+\label{exer:duality_minmatpb}
+
+Consider the problem
+\[
+p^* \doteq \min_{\Delta} \: c\tran (A+\Delta)^{-1}b ~:~ \|\Delta\| \le 1,
+\]
+where $A \in \Real{n\times n}$, with smallest singular value $\sigma_{\rm min}(A)$ strictly greater than one, and $b,c \in \Real{n}$. Here, $\|\cdot\|$ stands for the largest singular value norm. This problem arises in the study of equilibrium states of a dynamical system subject to perturbations.
+\begin{enumerate}
+	\item {[A few lines justification]}
+	Show that the objective function is well-defined everywhere on the feasible set.
+	
+	\textit{Hint:} you can show that a square matrix is invertible if it has non singular values (or even values) equal to $0$.
+	\sol{
+	    \input{matrix_dual_solutions/a.tex}
+	}
+	\item {[Several lines justification]}
+	Is the problem, as stated, convex? Give a proof or a counter-example. 
+	\sol{
+	    \input{matrix_dual_solutions/b.tex}
+	}
+	
+	\item {[Several lines justification]} What is the abswer to the question in Part (b) if $\Delta$ is restricted to be symmetric, $A$ is symmetric, and $b=c$? (We do not make such assumptions in the sequel.)\\
+	\textit{Hint:} Use Schur Complements. If you find the question hard, do not hesitate to work with some classmates.
+	
+	\sol{
+	    \input{matrix_dual_solutions/b1.tex}
+	}
+	\item {[A few lines justification]}
+	Show that the problem can be expressed as
+	\[
+	\min_x \: c\tran x ~:~ \|Ax-b\|_2^2 \le \|x\|_2^2.
+	\]
+	
+	\sol{
+	    \input{matrix_dual_solutions/c.tex}
+	}
+%	Is the problem still not convex in this form?
+	\item {[A few lines justification]}
+	Given our assumption that $\sigma_{\rm min}(A)>1$, describe the shape of the feasible set of the formulation in (c), in terms of the matrix $K \doteq A\tran A - I$, the vector $x_0 \doteq K^{-1}A\tran b$, and the scalar $\gamma \doteq x_0\tran K x_0 - b\tran b$. Explain why the above problem is convex.
+	
+	\sol{
+	    \input{matrix_dual_solutions/d.tex}
+	}
+
+	\item {[Expression + several lines justification]}
+	Form a Lagrange dual to the problem. Does strong duality hold?
+	
+	\sol{
+	    \input{matrix_dual_solutions/e.tex}
+	}
+	%\marginnote{The $\cal S$ procedure is explained in Section~\ref}.}
+	\item {[A few lines justification]}
+	Show that the optimal value can be written
+	\[
+	p^* = c\tran (A\tran A - I)^{-1}A\tran b - \|(AA\tran - I)^{-1/2}b\|_2 \cdot \|(A\tran A - I)^{-1/2} c\|_2.
+	\]
+	
+	\sol{
+	    \input{matrix_dual_solutions/f.tex}
+	}
+
+\end{enumerate}

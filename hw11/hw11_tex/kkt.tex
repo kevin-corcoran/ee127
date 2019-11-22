@@ -1,0 +1,142 @@
+%!TEX root = ./SolsManual.tex
+\qns{KKT conditions }
+
+Consider the optimization problem
+\[
+\begin{array}{l}
+\min\limits_{x \in \Real{n}} \: \dss\sum_{i=1}^n \left(\tfrac{1}{2}d_i x_i^2 + r_ix_i\right)\\
+\subt \; a\tran x=1, \;\; x_i \in [-1,1], \;\; i=1,\ldots,n,
+\end{array}
+\]
+where $|a_i| \geq 1$ and $d_i > 0$ for $i=1,\ldots,n$. \\ \\ 
+
+In this exercise, we will use the KKT conditions and/or the Lagrangian to find the dual of this optimization problem and develop some interesting results. Recall that the KKT conditions are:
+
+\begin{itemize}
+    \item Primal feasibility: $x \in \mathcal{D}, f_i(x) \leq 0, i = 1, \dots, m$
+    \item Dual feasibility: $\lambda \geq 0$
+    \item Complementary slackness: $\lambda_i f_i(x) = 0, i = 1, \dots, m$
+    \item Lagrangian stationarity: $x \in \text{arg} \min \mathcal{L}(\cdot, \lambda)$
+\end{itemize}
+
+\begin{enumerate}
+
+\item 
+{[Rewritten program + 1-2 lines justification]}
+Let $D=\diag{d_1,\ldots,d_n}$, $r=(r_1,\ldots,r_n)$. Show that the problem can be rewritten as a Quadratically Constrained Quadratic Program (QCQP) of the form
+
+\begin{align*}
+    \min_x & \frac{1}{2}x\tran D x + r\tran x \\
+    \subt & a\tran x =1 \\
+    & x_i^2\leq 1 & i=1,\ldots,n.
+\end{align*}
+
+\sol{
+\input{ktt_sol/1.tex}
+}
+
+\item 
+{[A few lines justification.]}
+Recall that if 
+
+\begin{itemize}
+    \item The objective and all of the constraints are differentiable.
+    \item Strong duality holds.
+    \item  The optimization problem is convex.
+\end{itemize}
+
+then the KKT optimality conditions are  necessary and sufficient for any pair of $(x^*, \lambda^*)$ to be optimal. 
+
+
+Verify that these three properties hold for this problem. 
+
+\sol{
+\input{ktt_sol/2.tex}
+}
+
+\item 
+{[A few lines justification + KKT]}
+Show that the Lagrangian is
+
+\[
+\calL(x,\lam,\mu) = \frac{1}{2}x\tran(D+\Lambda)x + (r+\mu a)\tran x -\left(\mu+ \frac{1}{2}\sum_{i=1}^n{\lam_i} \right),
+\]
+
+where $\Lambda = \diag{\lam}$ and $\lam=(\lam_1,\ldots,\lam_n)$ are the dual variables corresponding to the inequality constraints, and $\mu$ is the dual variable corresponding to the equality constraint. Also, write down the KKT optimality conditions.
+
+\sol{
+\input{ktt_sol/3.tex}
+}
+
+\item 
+{[A few lines justification]}
+Using the KKT condition that corresponds to the stationarity of the Lagrangian, write $x^*$ in terms of $\lambda^*$ and $\mu^*$. In particular, show that
+
+\[
+x_i^* = -\frac{r_i + \mu^* a_i}{d_i+\lam^*_i}, \quad i=1,\ldots,n.
+\]
+
+\sol{
+\input{ktt_sol/4.tex}
+}
+
+\item {[Algebraic justification]} The dual problem amounts to maximizing the dual function $g(\lam,\mu)$ w.r.t.\ $\mu$ and $\lam\geq 0$. Show that the dual function can be written as
+
+\[
+g(\lambda, \mu) = -\mu -\frac{1}{2} \sum_{i=1}^n \left[\frac{(r_i+\mu a_i)^2}{d_i+\lam_i} + \lam_i\right].
+\]
+
+\sol{
+\input{ktt_sol/5.tex}
+}
+
+\item  {[Algebraic expression + justification]} Find the maximum of $g(\lam,\mu)$ w.r.t.\ $\lam$, for fixed $\mu$. In particular, write down a closed-form expression for the corresponding optimal point $\lam_i^*(\mu)$.
+
+\textit{Do not forgot} the condition $\lam_i^\star(\mu) \geq 0$.
+
+\sol{
+\input{ktt_sol/6.tex}
+}
+
+\item {[Algebraic expression]} Using your previous results, express the optimal primal point $x_i^*(\mu)$ as a function of the scalar dual variable $\mu$ only.
+
+\sol{
+\input{ktt_sol/7.tex}
+}
+
+\item {[A few lines justification.]}From previous parts, we found $\lambda^*$ and $x^*$ in terms of $\mu^*$. Check that complementary slackness holds. 
+
+\sol{
+\input{ktt_sol/8.tex}
+}
+\end{enumerate}
+
+% The optimal $\mu$ is the value which makes the constraint $\sum_{i} a_ix_i^*(\mu) = 1 $ satisfied.
+% We can find this value by bisection over $\mu$. Since the gradient of $g(\lam^*,\mu)$ with respect to $\mu$
+% is simply given by $a\tran x_i^*(\mu)-1$, we increase
+% $\mu$ when the gradient is positive, and decrease it when it is negative. In practice, we initialize two values
+% $\mu_l< 0$, $\mu_r>0$ for which we know a priori that $\mu^*\in[\mu_l,\, \mu_r]$, and execute the following bisection algorithm.
+% \ben
+% \item[]
+% \ben
+% \item[(i)] Set $\mu = (\mu_r + \mu_l)/2$
+% \item[(ii)] Evaluate $h = a\tran x^*(\mu)-1$
+% \item[(iii)] If $h>0$, let $\mu_l = \mu$, else let $\mu_r = \mu$
+% \item[(iv)] If $|\mu_r - \mu_l|\leq \epsilon$ or $h=0$, exit and return $\mu$, else goto (i).
+% \een
+% \een
+
+% \begin{enumerate}
+% \item[(e)] Let $l$ be the length of the initial localization interval. Provide a simple upper bound on the number of iterations needed to reach a value of $\mu$ within $\epsilon$ from the true optimum $\mu^*$.
+
+% \sol{This algorithm returns a value of $\mu$ that is within $\epsilon$ from the true optimum $\mu^*$
+% in a number of iterations upper bounded by $\lceil\log_2( \ell/\epsilon) - 1\rceil$, where $\ell$ is the length of the initial localization interval. }
+
+% \item[(f)] In the notebook \verb+kkt_conditions.ipynb+, implement the bisection algorithm and compare it with the solution obtained via CVX (or another solver of your choice). Recommended values for $\mu_l, \mu_r, \epsilon$ are provided for you in the notebook. 
+
+% \sol{The numerical simulations confirm precisely this iteration bound.
+% See the solution code in \texttt{kkt\_conditions\_sols.ipynb}. For this solution with $n=500$, the bisection algorithm was approximately 30x faster than CVX. The time elapsed for solving via CVX was 0.1589 seconds while the bisection algorithm solved the problem in 0.00502 seconds. The euclidean distance between the solutions obtained with CVX and bisection was 0.00763. This result demonstrates a significant speedup in solving for optimal $\mu$ with minimal change to the optimal value. }
+% \end{enumerate}
+
+
+
